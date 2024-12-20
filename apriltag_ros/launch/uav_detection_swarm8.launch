@@ -1,0 +1,241 @@
+<launch>
+  <!-- drone_0_0 -->
+  <group ns="group0/uav0">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_0/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group0/uav0"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group>  
+
+  <!-- drone_0_1 -->
+  <group ns="group0/uav1">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_1/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group0/uav1"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group>  
+
+  <!-- drone_0_2 -->
+  <group ns="group0/uav2">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_2/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group0/uav2"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group>  
+  
+  <!-- drone_1_0 -->
+  <group ns="group1/uav0">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_3/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group1/uav0"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group>  
+
+  <!-- drone_1_1 -->
+  <group ns="group1/uav1">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_4/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group1/uav1"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group>  
+
+  <!-- drone_1_2 -->
+  <group ns="group1/uav2">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_5/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group1/uav2"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group> 
+
+  <!-- drone_2_0 -->
+  <group ns="group2/uav0">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_6/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group2/uav0"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group> 
+
+  <!-- drone_2_1 -->
+  <group ns="group2/uav1">
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/iris_7/camera" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+    <arg name="group_name" default="group2/uav1"/>
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+    </node>
+
+    <node pkg="apriltag_ros" type="tagdetect" name="tagdetect" output="screen" >
+      <!-- <remap from="tag_detections" to="/$(arg group_name)/tag_detections" /> -->
+      <param name="group_name" value="$(arg group_name)" />
+    </node>
+  </group> 
+</launch>

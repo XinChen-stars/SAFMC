@@ -1,0 +1,16 @@
+material Tag36h11_2
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Tag36h11_2.jpeg
+				filtering anistropic
+				max_anisotropy 16
+				scale 1.0 1.0
+			}
+		}
+	}
+}

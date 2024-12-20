@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="simtools" type="real_gazebo_pose" name="real_gazebo_pose" output="screen">
+        <param name="uav_name" value="iris"/>
+        <param name="uav_num" value="1"/>      
+    </node>
+</launch>
