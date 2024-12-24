@@ -8,21 +8,13 @@
 #include "nav_msgs/Path.h"
 #include "sensor_msgs/Range.h"
 #include "visualization_msgs/Marker.h"
-#include "visualization_msgs/MarkerArray.h"
 #include "armadillo"
 #include "pose_utils.h"
 #include "quadrotor_msgs/PositionCommand.h"
 #include "CameraPoseVisualization.h"
-#include <std_msgs/ColorRGBA.h>
-
 
 using namespace arma;
 using namespace std;
-
-std::vector<double> colorR = {150, 0, 0, 255, 255, 0, 243, 143, 112, 255, 241};
-std::vector<double> colorG = {150, 229, 0, 0, 44, 212, 110, 255, 0, 165, 84};
-std::vector<double> colorB = {150, 238, 255, 255, 44, 112, 50, 0, 255, 0, 76};
-std::vector<std_msgs::ColorRGBA> COLOR_LISTS;
 
 static string mesh_resource;
 static double color_r, color_g, color_b, color_a, cov_scale, scale, rotate_yaw;
@@ -44,7 +36,6 @@ ros::Publisher covVelPub;
 ros::Publisher trajPub;
 ros::Publisher sensorPub;
 ros::Publisher meshPub;
-ros::Publisher uav_model_pub;
 ros::Publisher heightPub;
 ros::Publisher pub_camera_pose_visual;// 相机位姿可视化
 tf::TransformBroadcaster *broadcaster;
@@ -56,65 +47,18 @@ visualization_msgs::Marker covVelROS;
 visualization_msgs::Marker trajROS;
 visualization_msgs::Marker sensorROS;
 visualization_msgs::Marker meshROS;
-visualization_msgs::MarkerArray vis_uav_model;
 sensor_msgs::Range heightROS;
 string _frame_id;
 int _drone_id;
 CameraPoseVisualization cameraposevisual(135, 74, 32, 1);// 相机位姿可视化，更改颜色
 
-std_msgs::ColorRGBA Id2Color(int idx, double a){
-  std_msgs::ColorRGBA color;
-  idx = idx % int(COLOR_LISTS.size());
-  color = COLOR_LISTS[idx];
-  color.a = a;
-  return color;
-}
+
 
 void odom_callback(const nav_msgs::Odometry::ConstPtr &msg)
 {
 
   if (msg->header.frame_id == string("null"))
     return;
-
-  vis_uav_model.markers[0].header.stamp = ros::Time::now();
-  vis_uav_model.markers[1].header.stamp = ros::Time::now();
-  vis_uav_model.markers[2].header.stamp = ros::Time::now();
-  vis_uav_model.markers[3].header.stamp = ros::Time::now();
-  vis_uav_model.markers[4].header.stamp = ros::Time::now();
-
-  vis_uav_model.markers[0].pose.orientation = msg->pose.pose.orientation;
-  vis_uav_model.markers[1].pose.orientation = msg->pose.pose.orientation;
-  vis_uav_model.markers[2].pose.orientation = msg->pose.pose.orientation;
-  vis_uav_model.markers[3].pose.orientation = msg->pose.pose.orientation;
-  vis_uav_model.markers[4].pose = msg->pose.pose;
-
-  Eigen::Quaterniond rot;
-  rot.x() = msg->pose.pose.orientation.x;
-  rot.y() = msg->pose.pose.orientation.y;
-  rot.z() = msg->pose.pose.orientation.z;
-  rot.w() = msg->pose.pose.orientation.w;
-  Eigen::Vector3d pos;
-  pos(0) = msg->pose.pose.position.x;
-  pos(1) = msg->pose.pose.position.y;
-  pos(2) = msg->pose.pose.position.z;
-
-  Eigen::Vector3d p(0.08, 0.08, -0.01);
-  std::vector<Eigen::Vector3d> pl;
-  pl.emplace_back(p);
-  p(0) = -p(0);
-  pl.emplace_back(p);
-  p(1) = -p(1);
-  pl.emplace_back(p);
-  p(0) = -p(0);
-  pl.emplace_back(p);
-
-  for(int j = 0; j < 4; j++){
-      p = rot.toRotationMatrix() * pl[j] + pos;
-      vis_uav_model.markers[j].pose.position.x = p(0);
-      vis_uav_model.markers[j].pose.position.y = p(1);
-      vis_uav_model.markers[j].pose.position.z = p(2);
-  }
-  uav_model_pub.publish(vis_uav_model);
 
   colvec pose(6);
   pose(0) = msg->pose.pose.position.x;
@@ -526,49 +470,6 @@ void cmd_callback(const quadrotor_msgs::PositionCommand cmd)
   meshPub.publish(meshROS);
 }
 
-//创建无人机可视化模型
-void CreateVisModels(){
-  vis_uav_model.markers.resize(5);
-  vis_uav_model.markers[0].header.frame_id = "world";
-  vis_uav_model.markers[0].header.stamp = ros::Time::now();
-  vis_uav_model.markers[0].id = 0;
-  vis_uav_model.markers[0].action = visualization_msgs::Marker::ADD;
-  vis_uav_model.markers[0].type = visualization_msgs::Marker::SPHERE;
-  vis_uav_model.markers[0].scale.x = 0.10;
-  vis_uav_model.markers[0].scale.y = 0.10;
-  vis_uav_model.markers[0].scale.z = 0.02;
-  vis_uav_model.markers[0].color = Id2Color(1, 1.0);
-
-  vis_uav_model.markers[1] = vis_uav_model.markers[0];
-  vis_uav_model.markers[1].id = 1;
-  vis_uav_model.markers[2] = vis_uav_model.markers[0];
-  vis_uav_model.markers[2].id = 2;
-  vis_uav_model.markers[3] = vis_uav_model.markers[0];
-  vis_uav_model.markers[3].id = 3;
-  vis_uav_model.markers[4] = vis_uav_model.markers[0];
-  vis_uav_model.markers[4].id = 4;
-  vis_uav_model.markers[4].type = visualization_msgs::Marker::LINE_LIST;
-  vis_uav_model.markers[4].scale.x = 0.01;
-  vis_uav_model.markers[4].scale.y = 0.01;
-  vis_uav_model.markers[4].scale.z = 0.01;
-
-  geometry_msgs::Point pt;
-
-  pt.x = 0.08;
-  pt.y = 0.08;
-  pt.z = -0.01;
-  vis_uav_model.markers[4].points.emplace_back(pt);
-  pt.y = -0.08;
-  pt.x = -0.08;
-  vis_uav_model.markers[4].points.emplace_back(pt);
-  pt.x = -0.08;
-  pt.y = 0.08;
-  vis_uav_model.markers[4].points.emplace_back(pt);
-  pt.x = 0.08;
-  pt.y = -0.08;
-  vis_uav_model.markers[4].points.emplace_back(pt);
-}
-
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "odom_visualization");
@@ -606,26 +507,13 @@ int main(int argc, char **argv)
   trajPub = n.advertise<visualization_msgs::Marker>("trajectory", 100, true);
   sensorPub = n.advertise<visualization_msgs::Marker>("sensor", 100, true);
   meshPub = n.advertise<visualization_msgs::Marker>("robot", 100, true);
-  uav_model_pub = n.advertise<visualization_msgs::MarkerArray>("uav_model", 1);
   heightPub = n.advertise<sensor_msgs::Range>("height", 100, true);
   pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 10,true);// 相机位姿可视化
 
-  std_msgs::ColorRGBA color;
-  for(int i = 0; i < colorR.size(); i++){
-    color.a = 1.0;
-    color.r = colorR[i] / 255.0; // 确保颜色值在0到1的范围内
-    color.g = colorG[i] / 255.0;
-    color.b = colorB[i] / 255.0;
-    COLOR_LISTS.push_back(color);
-  }
-  std_msgs::ColorRGBA camera_color;
-  camera_color = Id2Color(1, 1.0);
-  cameraposevisual.setImageBoundaryColor( camera_color.r, camera_color.g, camera_color.b);// 相机位姿可视化，设置图像边界颜色
-  cameraposevisual.setOpticalCenterConnectorColor( camera_color.r, camera_color.g, camera_color.b);// 相机位姿可视化，设置光学中心连接器颜色
+  cameraposevisual.setImageBoundaryColor( camera_r, camera_g, camera_b);// 相机位姿可视化，设置图像边界颜色
+  cameraposevisual.setOpticalCenterConnectorColor( camera_r, camera_g, camera_b);// 相机位姿可视化，设置光学中心连接器颜色
   cameraposevisual.setScale(search_height);// 相机位姿可视化，设置尺度
   cameraposevisual.setLineWidth(0.03);// 相机位姿可视化，设置线宽
-
-  CreateVisModels();
 
   tf::TransformBroadcaster b;
   broadcaster = &b;

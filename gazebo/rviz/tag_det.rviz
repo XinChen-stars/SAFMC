@@ -282,7 +282,7 @@ Visualization Manager:
         - Class: rviz/MarkerArray
           Enabled: true
           Marker Topic: /odom_visualization/camera_pose_visual
-          Name: vis_model
+          Name: vis_camera
           Namespaces:
             CameraPoseVisualization: true
           Queue Size: 100
@@ -304,13 +304,13 @@ Visualization Manager:
           Unreliable: false
           Value: true
         - Class: rviz/Marker
-          Enabled: true
+          Enabled: false
           Marker Topic: /odom_visualization/robot
           Name: Marker
           Namespaces:
-            world: true
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Alpha: 1
           Buffer Length: 1
           Class: rviz/Path
@@ -334,6 +334,14 @@ Visualization Manager:
           Shaft Length: 0.10000000149011612
           Topic: /odom_visualization/path
           Unreliable: false
+          Value: true
+        - Class: rviz/MarkerArray
+          Enabled: true
+          Marker Topic: /odom_visualization/uav_model
+          Name: vis_uav
+          Namespaces:
+            "": true
+          Queue Size: 100
           Value: true
       Enabled: true
       Name: UAV
@@ -365,7 +373,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 11.17559814453125
+      Distance: 19.733488082885742
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -373,9 +381,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 14.5045804977417
-        Y: 1.2888001203536987
-        Z: 0.0320548489689827
+        X: 9.18403434753418
+        Y: 0.2347741425037384
+        Z: 0.004492894280701876
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -383,7 +391,7 @@ Visualization Manager:
       Near Clip Distance: 0.009999999776482582
       Pitch: 1.5497963428497314
       Target Frame: <Fixed Frame>
-      Yaw: 3.140336751937866
+      Yaw: 3.1453473567962646
     Saved: ~
 Window Geometry:
   Displays:
