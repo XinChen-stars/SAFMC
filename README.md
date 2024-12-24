@@ -1,3 +1,7 @@
+# TODO
+- Add EKF fuction to improve the precision of the apriltag detection
+- Add the apriltag detection to the exploration fsm
+
 # Apriltag_tutorial
 ## 1.USB-CAM
 ### (1)安装USB-CAM功能包
