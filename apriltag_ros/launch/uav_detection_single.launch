@@ -49,4 +49,6 @@
     <param name="drone_id" value="0"/>
     <param name="search_height" value="1.5"/>
   </node>
+  <!-- rviz  -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apriltag_ros)/rviz/tag_det.rviz" required="true" output="screen"/>
 </launch>

@@ -26,27 +26,27 @@ void Eigen2Point(const Eigen::Vector3d& v, geometry_msgs::Point& p) {
 
 CameraPoseVisualization::CameraPoseVisualization(float r, float g, float b, float a)
     : m_marker_ns("CameraPoseVisualization"), m_scale(0.2), m_line_width(0.01) {
-    m_image_boundary_color.r = r / 255.0;;
-    m_image_boundary_color.g = g / 255.0;;
-    m_image_boundary_color.b = b / 255.0;;
+    m_image_boundary_color.r = r;
+    m_image_boundary_color.g = g;
+    m_image_boundary_color.b = b;
     m_image_boundary_color.a = a;
-    m_optical_center_connector_color.r = r / 255.0;;
-    m_optical_center_connector_color.g = g / 255.0;;
-    m_optical_center_connector_color.b = b / 255.0;;
+    m_optical_center_connector_color.r = r;
+    m_optical_center_connector_color.g = g;
+    m_optical_center_connector_color.b = b;
     m_optical_center_connector_color.a = a;
 }
 
 void CameraPoseVisualization::setImageBoundaryColor(float r, float g, float b, float a) {
-    m_image_boundary_color.r = r / 255.0;;
-    m_image_boundary_color.g = g / 255.0;;
-    m_image_boundary_color.b = b / 255.0;;
+    m_image_boundary_color.r = r;
+    m_image_boundary_color.g = g;
+    m_image_boundary_color.b = b;
     m_image_boundary_color.a = a;
 }
 
 void CameraPoseVisualization::setOpticalCenterConnectorColor(float r, float g, float b, float a) {
-    m_optical_center_connector_color.r = r / 255.0;;
-    m_optical_center_connector_color.g = g / 255.0;;
-    m_optical_center_connector_color.b = b / 255.0;;
+    m_optical_center_connector_color.r = r;
+    m_optical_center_connector_color.g = g;
+    m_optical_center_connector_color.b = b;
     m_optical_center_connector_color.a = a;
 }
 
