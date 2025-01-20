@@ -3,6 +3,9 @@
 - Add the apriltag detection to the exploration fsm
 
 # SAFMC_tutorial
+## 0.Requirement
+    sudo apt-get install libeigen3-dev       
+    sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen
 ## 1.Install apriltag
     git clone https://github.com/AprilRobotics/apriltag.git
     cd apriltag/
