@@ -4,7 +4,8 @@
     <!-- launches Gazebo environment and 2x: MAVROS, PX4 SITL, and spawns vehicle -->
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/tag36h11_easy.world"/>
+    <!-- <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/tag36h11_easy.world"/> -->
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/mission_tag.world"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
@@ -27,13 +28,14 @@
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="0"/>
-            <arg name="y" value="0"/>
+            <arg name="y" value="6"/>
             <arg name="z" value="0.1"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
+            <arg name="Y" value="1.57"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_downward_camera"/>
+            <arg name="sdf" value="iris_realsense_downward_camera"/>
+            <!-- <arg name="sdf" value="iris_mid360_realsense_downward"/> -->
             <!-- <arg name="sdf" value="iris"/> -->
             <arg name="mavlink_udp_port" value="18570"/>
             <arg name="mavlink_tcp_port" value="4560"/>
