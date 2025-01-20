@@ -25,13 +25,13 @@
 
 ## 3.Configure gazebo environment
     cd ~/SAFMC/src/SAFMC/gazebo
-    cp ./gazebo_models/* ~/PX4_Firmware/Tools/sitl_gazebo/models
+    cp -r ./gazebo_models/* ~/PX4_Firmware/Tools/sitl_gazebo/models
     cp ./gazebo_worlds/* ~/PX4_Firmware/Tools/sitl_gazebo/worlds
     cp ./gazebo_launch/search_single_simulation.launch ~/PX4_Firmware/launch
 
 ## 4.Configure PX4 environment
     rm -rf ~/PX4_Firmware/build/px4_sitl_default/etc/init.d-posix/rcS
-    cp ~/SAFMC/src/PX4_EKF/rcS ~/PX4_Firmware/build/px4_sitl_default/etc/init.d-posix/
+    cp ~/SAFMC/src/SAFMC/PX4_EKF/rcS ~/PX4_Firmware/build/px4_sitl_default/etc/init.d-posix/
     rm ~/.ros/eeprom/parameters*
     rm -rf ~/.ros/sitl*
 
