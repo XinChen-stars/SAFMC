@@ -5,6 +5,7 @@
 # SAFMC_tutorial
 ## 1.Install apriltag
     git clone https://github.com/AprilRobotics/apriltag.git
+    cd apriltag/
     mkdir build
     cd build
     cmake ..
