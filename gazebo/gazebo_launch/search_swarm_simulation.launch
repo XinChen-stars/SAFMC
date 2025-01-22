@@ -314,7 +314,7 @@
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="9"/>
         <arg name="ID_in_group" value="9"/>
-        <arg name="fcu_url" default="udp://:24548@localhost:34589"/>
+        <arg name="fcu_url" default="udp://:24549@localhost:34589"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="9.0"/>
