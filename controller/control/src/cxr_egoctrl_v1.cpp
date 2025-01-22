@@ -174,7 +174,7 @@ while(ros::ok()/*&&rc_value>900&&rc_value<1150*/)
 	        current_goal.type_mask = velocity_mask;
 			current_goal.velocity.x = (0 - position_x)*1;;
 			current_goal.velocity.y = (0 - position_y)*1;;
-			current_goal.velocity.z = (1.5 - position_z)*1;
+			current_goal.velocity.z = (1.0 - position_z)*1;
 			current_goal.yaw = current_yaw;
 			ROS_INFO("请等待");
 			local_pos_pub.publish(current_goal);
