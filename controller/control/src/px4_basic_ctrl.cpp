@@ -241,9 +241,9 @@ int main(int argc, char **argv)
 			current_goal.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;//选择local系，一定要local系
 			current_goal.header.stamp = ros::Time::now();
 			current_goal.type_mask = velocity_mask;//这个就算对应的掩码设置，可以看mavros_msgs::PositionTarget消息格式
-			current_goal.velocity.x =  (cmd_pos_x - position_x) * 2;
-			current_goal.velocity.y =  (cmd_pos_y - position_y) * 2;
-			current_goal.velocity.z =  (cmd_pos_z - position_z) * 2;
+			current_goal.velocity.x =  (cmd_pos_x - position_x - position_x_begin) * 2;
+			current_goal.velocity.y =  (cmd_pos_y - position_y - position_y_begin) * 2;
+			current_goal.velocity.z =  (cmd_pos_z - position_z - position_z_begin) * 2;
 			current_goal.yaw = cmd_yaw;
 			double vel = sqrt(pow(current_goal.velocity.x, 2) + pow(current_goal.velocity.y, 2));
 			ROS_INFO_STREAM(pre_name << " : vel = " << vel);
