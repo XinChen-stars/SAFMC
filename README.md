@@ -1,6 +1,6 @@
 # TODO
-- Add EKF fuction to improve the precision of the apriltag detection
-- Add the apriltag detection to the exploration fsm
+1.add manage final land position
+2.add px4 auto land function
 
 # SAFMC_tutorial
 This repo is a ros workspace, containing SAFMC rospkgs:
