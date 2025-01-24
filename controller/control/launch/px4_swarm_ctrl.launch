@@ -1,0 +1,75 @@
+<launch>
+  <arg name="uav_name" default="iris"/>
+  <arg name="uav_id" default="0"/>
+  <arg name="takeoff_height" default="1.0" />
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_0" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_0"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="$(arg uav_id)" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_1" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_1"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="1" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_2" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_2"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="2" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_3" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_3"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="3" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_4" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_4"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="4" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_5" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_5"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="5" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_6" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_6"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="6" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_7" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_7"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="7" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_8" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_8"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="8" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_9" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_9"/>
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="9" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+</launch>

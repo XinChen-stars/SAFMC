@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(cxr_egoctrl_v1)
+project(px4_basic_ctrl)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -152,11 +152,15 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
- add_executable(cxr_egoctrl_v1 src/cxr_egoctrl_v1.cpp)
+add_executable(cxr_egoctrl_v1 src/cxr_egoctrl_v1.cpp)
 target_link_libraries(cxr_egoctrl_v1
    ${catkin_LIBRARIES}
  )
 
+add_executable(px4_basic_ctrl src/px4_basic_ctrl.cpp)
+target_link_libraries(px4_basic_ctrl
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############

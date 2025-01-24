@@ -1,0 +1,12 @@
+<launch>
+  <arg name="uav_name" default="iris"/>
+  <arg name="uav_id" default="0"/>
+  <arg name="takeoff_height" default="1.0" />
+
+  <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_0" output="screen">
+    <param name="uav_name" value="$(arg uav_name)" />
+    <param name="uav_id" value="$(arg uav_id)" />
+    <param name="takeoff_height" value="$(arg takeoff_height)" />
+  </node>
+
+</launch>
