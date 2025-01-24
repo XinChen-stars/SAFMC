@@ -121,6 +121,9 @@ target_link_libraries(${PROJECT_NAME}_continuous_detector ${PROJECT_NAME}_common
 add_library(${PROJECT_NAME}_single_image_detector src/single_image_detector.cpp)
 target_link_libraries(${PROJECT_NAME}_single_image_detector ${PROJECT_NAME}_common ${catkin_LIBRARIES})
 
+#添加kf库
+add_library(kalmanFilter include/kf/kalmanFilter.cpp)
+
 add_executable(${PROJECT_NAME}_continuous_node src/${PROJECT_NAME}_continuous_node.cpp)
 add_dependencies(${PROJECT_NAME}_continuous_node ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(${PROJECT_NAME}_continuous_node ${PROJECT_NAME}_continuous_detector ${catkin_LIBRARIES})
@@ -138,7 +141,10 @@ target_link_libraries(tagdetect ${catkin_LIBRARIES})
 add_executable(imgtoqgc src/pub_imgtoQGC.cpp)
 target_link_libraries(imgtoqgc ${catkin_LIBRARIES})
 add_executable(tag_result_pub src/tag_result_pub.cpp)
-target_link_libraries(tag_result_pub ${catkin_LIBRARIES})
+target_link_libraries(tag_result_pub ${catkin_LIBRARIES} kalmanFilter)
+
+add_executable(tag_result_pub_original src/tag_result_pub_original.cpp)
+target_link_libraries(tag_result_pub_original ${catkin_LIBRARIES} kalmanFilter)
 #############
 ## Install ##
 #############

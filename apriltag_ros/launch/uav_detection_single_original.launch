@@ -1,0 +1,54 @@
+<launch>
+  <arg name="launch_prefix" default="" />
+
+  <!-- configure camera input -->
+  <arg name="camera_name" default="/iris_0/camera" />
+  <arg name="image_topic" default="image_raw" />
+  <arg name="queue_size" default="1" />
+  <arg name="use_prename" default="false" />
+  <arg name="prename" default="iris"/>
+  <arg name="stateEstimationTopic" default="/iris_0/mavros/local_position/odom"/>
+
+  <!-- apriltag_ros continuous detection node -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <!-- Remap topics from those used in code to those on the ROS network -->
+    <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+    <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+    <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <!-- load parameters (incl. tag family, tags, etc.) -->
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+  <!-- detection result visulization -->
+  <node pkg="apriltag_ros" type="tag_result_pub_original" name="tag_result_pub" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="prename" value="$(arg prename)" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+  <!-- uav visulization -->
+  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
+    <remap from="~odom" to="$(arg stateEstimationTopic)"/>
+    <param name="color/a" value="1.0"/>
+    <param name="color/r" value="0.0"/>        
+    <param name="color/g" value="229.0"/>        
+    <param name="color/b" value="239.0"/>  
+    <param name="camera/r" value="0.0"/>        
+    <param name="camera/g" value="229.0"/>        
+    <param name="camera/b" value="239.0"/>     
+    <param name="covariance_scale" value="100.0"/>       
+    <param name="robot_scale" value="0.3"/>
+    <param name="tf45" value="false"/>
+    <param name="drone_id" value="0"/>
+    <param name="search_height" value="1.5"/>
+  </node>
+  <!-- rviz  -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apriltag_ros)/rviz/tag_det.rviz" required="true" output="screen"/>
+</launch>

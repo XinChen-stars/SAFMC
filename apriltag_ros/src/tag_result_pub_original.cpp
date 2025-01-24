@@ -23,7 +23,6 @@
 #include <message_filters/sync_policies/exact_time.h>
 #include <message_filters/time_synchronizer.h>
 #include <std_msgs/ColorRGBA.h>
-#include <kf/kalmanFilter.h>
 
 ros::Publisher vis_tag_pub;
 ros::Publisher uav_pose_pub;
@@ -60,10 +59,6 @@ struct Tag_Sptial_Temporal
 {
   Eigen::Vector3d tag_position;
   Eigen::Vector3d sum_position;
-  kalman_filter kf;
-  Eigen::Vector3d init_tag_position;//初始位置
-  Eigen::Vector3d observation_tag_position;//观测到的位置
-  Eigen::Vector3d estimated_tag_position;//估计位置
   int record_num;
   int tag_id;
   int target_id;
@@ -104,98 +99,6 @@ std_msgs::ColorRGBA Id2Color(int idx, double a){
   color.a = a;
   return color;
 }
-
-
-void Kalman_Filter_Init(double init_x, double init_y, double init_z, kalman_filter &kf) {
-  // 状态向量维度和观测向量维度
-  int state_dim = 3;  // [x, y, z]
-  int measurement_dim = 3; // [观测到的位置维度]
-
-  // 状态向量初始化
-  Eigen::MatrixXd states(state_dim, 1);
-  double state1 = init_x;
-  double state2 = init_y;
-  double state3 = init_z;// 初始位置均为 0
-  states << state1, state2, state3;  
-
-  // 状态转移矩阵 A
-  Eigen::MatrixXd A(state_dim, state_dim);
-  A << 1, 0, 0,
-        0, 1, 0,
-        0, 0, 1;
-  // 控制矩阵 B
-  Eigen::MatrixXd B(state_dim, 1);
-  B << 0,
-        0,
-        0;
-
-  // 状态协方差矩阵 P
-  Eigen::MatrixXd P(state_dim, state_dim);
-  P << 0.3, 0, 0,
-        0, 0.3, 0,
-        0, 0, 0.3;
-
-  // 过程噪声协方差矩阵 Q
-  Eigen::MatrixXd Q(state_dim, state_dim);
-  Q << 0.00001, 0, 0,
-        0, 0.00001, 0,
-        0, 0, 0.00001;
-
-  // 观测噪声协方差矩阵 R
-  Eigen::MatrixXd R(measurement_dim, measurement_dim);
-  R << 0.1, 0, 0,
-        0, 0.1, 0,
-        0, 0, 0.1;
-  // 观测矩阵 H
-  Eigen::MatrixXd H(measurement_dim, state_dim);
-  H << 1, 0, 0,
-        0, 1, 0,
-        0, 0, 1; // 观测值为位置坐标
-
-  // 初始化卡尔曼滤波器
-  kf.setup(states, A, B, H, P, Q, R);    
-
-}
-
-Eigen::Vector3d Kalman_Filter_Estimate(double obs_x, double obs_y, double obs_z, double est_x, double est_y, double est_z, kalman_filter &kf) {
-  // 控制输入为0
-  Eigen::MatrixXd control_input(1, 1);
-  control_input << 0; 
-
-  // 模拟观测值 (位置)
-  Eigen::MatrixXd measurement(3, 1);
-  measurement << obs_x, obs_y, obs_z;  // 观测到的位置
-
-
-  int state_dim = 3;  // [x, y, z]
-  int measurement_dim = 3; // [观测到的位置维度]
-
-  // 状态向量初始化
-  Eigen::MatrixXd states(3, 1);
-  states << est_x, est_y, est_z;  
-  kf.set_state(states);
-
-  // 执行卡尔曼滤波进行更新
-  kf.estimate(measurement, control_input);
-
-  // 输出估计值
-  //std::cout << "Estimated position: " << kf.output(0) << std::endl;//x坐标
-  //std::cout << "Estimated position: " << kf.output(1) << std::endl;//y坐标
-  //std::cout << "Estimated position: " << kf.output(2) << std::endl;//z坐标
-  double state1_output;
-  double state2_output;
-  double state3_output;
-
-  state1_output =kf.output(0);
-  state2_output =kf.output(1);
-  state3_output =kf.output(2);
-
-  Eigen::Vector3d estimated_position;
-  estimated_position << state1_output, state2_output, state3_output;
-  return estimated_position;
-
-}
-
 
 //创建无人机可视化模型
 void CreateVisModels(){
@@ -306,12 +209,9 @@ bool isNewTarget(const Eigen::Vector3d& new_position,const int id){
           // 尝试重新识别历史目标
           if (distance < POSITION_THRESHOLD) {
               target.record_num++;
-              target.observation_tag_position = new_position;
-              target.estimated_tag_position = Kalman_Filter_Estimate(new_position(0),new_position(1),new_position(2),target.estimated_tag_position(0),target.estimated_tag_position(1),target.estimated_tag_position(2),target.kf);
-              target.sum_position += target.estimated_tag_position;
-              
+              target.sum_position += new_position;
+              // target.position = new_position;
               target.tag_position = target.sum_position * (1.0 / target.record_num);
-              
               return false;
           }
       }
@@ -323,10 +223,6 @@ bool isNewTarget(const Eigen::Vector3d& new_position,const int id){
       new_target.record_num = 1;
       new_target.tag_id = 0;
       new_target.target_id = next_VICTIM_id;
-      new_target.init_tag_position = new_position;
-      new_target.observation_tag_position = new_position;
-      Kalman_Filter_Init(new_position(0),new_position(1),new_position(2),new_target.kf);
-      new_target.estimated_tag_position = new_position;
       detected_VICTIM_tags_.push_back(new_target);
       next_VICTIM_id ++;
       return true;
@@ -341,12 +237,9 @@ bool isNewTarget(const Eigen::Vector3d& new_position,const int id){
           // 尝试重新识别历史目标
           if (distance < POSITION_THRESHOLD) {
               target.record_num++;
+              target.sum_position += new_position;
               // target.position = new_position;
-              target.observation_tag_position = new_position;
-              target.estimated_tag_position = Kalman_Filter_Estimate(new_position(0),new_position(1),new_position(2),target.estimated_tag_position(0),target.estimated_tag_position(1),target.estimated_tag_position(2),target.kf);
-              target.sum_position += target.estimated_tag_position;
               target.tag_position = target.sum_position * (1.0 / target.record_num);
-              
               return false;
           }
       }
@@ -358,10 +251,6 @@ bool isNewTarget(const Eigen::Vector3d& new_position,const int id){
       new_target.record_num = 1;
       new_target.tag_id = 1;
       new_target.target_id = next_DANGER_id;
-      new_target.init_tag_position = new_position;
-      new_target.observation_tag_position = new_position;
-      Kalman_Filter_Init(new_position(0),new_position(1),new_position(2),new_target.kf);
-      new_target.estimated_tag_position = new_position;
       detected_DANGER_tags_.push_back(new_target);
       next_DANGER_id ++;
       return true;
@@ -389,18 +278,12 @@ void transform_tag_position()
         detected_tag0.record_num = 1;
         detected_tag0.tag_id = 0;
         detected_tag0.target_id = next_VICTIM_id;
-        detected_tag0.init_tag_position = ENU_pose;
-        detected_tag0.observation_tag_position = ENU_pose;
-        Kalman_Filter_Init(ENU_pose(0),ENU_pose(1),ENU_pose(2),detected_tag0.kf);
-        detected_tag0.estimated_tag_position = ENU_pose;
         detected_VICTIM_tags_.push_back(detected_tag0);
-
         next_VICTIM_id ++;
         init_VICTIM_tags_ = true;
       }
       else
       {
-        // 新的victim目标
         if (isNewTarget(ENU_pose,0))
         {
           ROS_INFO("New VICTIM detected");
@@ -421,18 +304,12 @@ void transform_tag_position()
         detected_tag1.record_num = 1;
         detected_tag1.tag_id = 1;
         detected_tag1.target_id = next_DANGER_id;
-        detected_tag1.init_tag_position = ENU_pose;
-        detected_tag1.observation_tag_position = ENU_pose;
-        Kalman_Filter_Init(ENU_pose(0),ENU_pose(1),ENU_pose(2),detected_tag1.kf);
-        detected_tag1.estimated_tag_position = ENU_pose;
         detected_DANGER_tags_.push_back(detected_tag1);
-
         next_DANGER_id ++;
         init_DANGER_tags_ = true;
       }
       else
       {
-        // 新的danger zone目标
         if (isNewTarget(ENU_pose,1))
         {
           ROS_INFO("New DANGER ZONE detected");
@@ -441,6 +318,76 @@ void transform_tag_position()
     }
     
   }
+
+
+  // if (!init_VICTIM_tags_)
+  // {
+  //   for (int i = 0; i < detect_msgs.detections.size() - 1; i++)
+  //   {
+  //     detect_msg = detect_msgs.detections[i];
+  //     if (detect_msg.id[0] == 0)
+  //     {
+  //       Eigen::Vector3d RDF_pose;
+  //       RDF_pose << detect_msg.pose.pose.pose.position.x, detect_msg.pose.pose.pose.position.y, detect_msg.pose.pose.pose.position.z;
+  //       Eigen::Vector3d ENU_pose = local2Cam.block<3, 3>(0, 0) * RDF_pose + local2Cam.block<3, 1>(0, 3);
+
+  //       Tag_Sptial_Temporal detected_tag0;
+  //       detected_tag0.tag_position = ENU_pose;
+  //       detected_tag0.sum_position = ENU_pose;
+  //       detected_tag0.record_num = 1;
+  //       detected_tag0.tag_id = 0;
+  //       detected_tag0.target_id = next_VICTIM_id;
+  //       detected_VICTIM_tags_.push_back(detected_tag0);
+  //       next_VICTIM_id ++;
+
+  //     }
+  //     else if (detect_msg.id[0] == 1)
+  //     {
+  //       Eigen::Vector3d RDF_pose;
+  //       RDF_pose << detect_msg.pose.pose.pose.position.x, detect_msg.pose.pose.pose.position.y, detect_msg.pose.pose.pose.position.z;
+  //       Eigen::Vector3d ENU_pose = local2Cam.block<3, 3>(0, 0) * RDF_pose + local2Cam.block<3, 1>(0, 3);
+
+  //       Tag_Sptial_Temporal detected_tag1;
+  //       detected_tag1.tag_position = ENU_pose;
+  //       detected_tag1.sum_position = ENU_pose;
+  //       detected_tag1.record_num = 1;
+  //       detected_tag1.tag_id = 0;
+  //       detected_tag1.target_id = next_DANGER_id;
+  //       detected_DANGER_tags_.push_back(detected_tag1);
+  //       next_DANGER_id ++;
+  //     }
+      
+  //   }
+  //   init_VICTIM_tags_ = true;
+  // }
+  // else
+  // {
+  //   for (int i = 0; i < detect_msgs.detections.size() - 1; i++)
+  //   {
+  //     detect_msg = detect_msgs.detections[i];
+  //     if (detect_msg.id[0] == 0)
+  //     {
+  //       Eigen::Vector3d RDF_pose;
+  //       RDF_pose << detect_msg.pose.pose.pose.position.x, detect_msg.pose.pose.pose.position.y, detect_msg.pose.pose.pose.position.z;
+  //       Eigen::Vector3d ENU_pose = local2Cam.block<3, 3>(0, 0) * RDF_pose + local2Cam.block<3, 1>(0, 3);
+  //       if (isNewTarget(ENU_pose,0))
+  //       {
+  //         ROS_INFO("New VICTIM detected");
+  //       }
+        
+  //     }
+  //     else if (detect_msg.id[0] == 1)
+  //     {
+  //       Eigen::Vector3d RDF_pose;
+  //       RDF_pose << detect_msg.pose.pose.pose.position.x, detect_msg.pose.pose.pose.position.y, detect_msg.pose.pose.pose.position.z;
+  //       Eigen::Vector3d ENU_pose = local2Cam.block<3, 3>(0, 0) * RDF_pose + local2Cam.block<3, 1>(0, 3);
+  //       if (isNewTarget(ENU_pose,1))
+  //       {
+  //         ROS_INFO("New DANGER ZONE detected");
+  //       }
+  //     }
+  //   }
+  // }
 
 }
 
@@ -854,4 +801,47 @@ int main(int argc, char **argv)
     loop_rate.sleep();
   }
   return 0;
+}
+
+// no used
+void detect_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& msg)
+{
+  detect_msgs = *msg;
+  if (detect_msgs.detections.size() == 0)
+  {
+    ROS_WARN_STREAM(node_name << ": No Tag detected !");
+    return;
+  }
+  
+  // ROS_WARN_STREAM(node_name << ": Tag detected NUMBER: " << detect_msgs.detections.size() - 1);
+  if (received_odom)
+  {
+    transform_tag_position();
+  }
+  else
+  {
+    ROS_WARN_STREAM(node_name << ": Waitting for Odom !");
+  }
+}
+
+// no used
+void Odomcallback(const nav_msgs::OdometryConstPtr& msg)
+{
+  received_odom = true;
+  odom_p << msg->pose.pose.position.x, msg->pose.pose.position.y, msg->pose.pose.position.z;
+  odom_v << msg->twist.twist.linear.x, msg->twist.twist.linear.y, msg->twist.twist.linear.z; 
+  odom_q = Eigen::Quaterniond(msg->pose.pose.orientation.w, msg->pose.pose.orientation.x, 
+                                msg->pose.pose.orientation.y, msg->pose.pose.orientation.z);
+  Eigen::Matrix3d rot = odom_q.toRotationMatrix();
+  // convert body pose to camera pose
+  Eigen::Matrix4d local2body; local2body.setZero();
+  local2body.block<3, 3>(0, 0) = rot;
+  local2body(0, 3) = msg->pose.pose.position.x; 
+  local2body(1, 3) = msg->pose.pose.position.y;
+  local2body(2, 3) = msg->pose.pose.position.z;
+  local2body(3, 3) = 1.0;
+
+  local2Cam = local2body * body2Cam;
+
+  local2Cam_rotate = local2Cam.block<3, 3>(0, 0);
 }
