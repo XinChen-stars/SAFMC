@@ -26,11 +26,14 @@
 #include <kf/kalmanFilter.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
+#include <std_msgs/Empty.h>
 
 ros::Publisher vis_tag_pub;
 ros::Publisher uav_pose_pub;
 ros::Publisher uav_model_pub;
+ros::Publisher uav_land_pose_pub;
 ros::Subscriber uav_state_sub;
+ros::Subscriber wp_finished_sub;
 geometry_msgs::PoseStamped uav_pose;
 visualization_msgs::MarkerArray vis_uav_model;
 ros::Publisher fov_pub;
@@ -43,6 +46,8 @@ std::string node_name;
 std::string prename;
 std::string uav_name;
 bool use_prename;
+bool finished_wp_flag = false;
+bool init_land_flag = false;
 int drone_id;
 int VICTIM_num;
 int DANGER_num;
@@ -53,7 +58,7 @@ Eigen::Matrix4d local2Cam; // from local frame to camera frame
 Eigen::Matrix3d local2Cam_rotate;
 double offset_x, offset_y, offset_z;
 
-Eigen::Vector3d odom_p, odom_v;
+Eigen::Vector3d odom_p, odom_v, init_land_p;
 Eigen::Quaterniond odom_q;
 
 apriltag_ros::AprilTagDetection detect_msg;
@@ -77,6 +82,7 @@ struct Tag_Sptial_Temporal
 
 std::vector<Tag_Sptial_Temporal> detected_VICTIM_tags_;
 std::vector<Tag_Sptial_Temporal> detected_DANGER_tags_;
+std::vector<Eigen::Vector3d> other_detected_VICTIM_tag_;
 double POSITION_THRESHOLD = 1.0;// 位置阈值(米)
 int next_VICTIM_id = 1;  // VICTIM ID计数器
 int next_DANGER_id = 1;  // DANGER ID计数器
@@ -91,30 +97,51 @@ std::vector<std_msgs::ColorRGBA> COLOR_LISTS;
 mavros_msgs::State uav_state;//无人机状态
 mavros_msgs::State last_uav_state;//上一时刻无人机状态
 
-
-// Check detceted VICTIM tags is empty
-//  if no, continue to the next step
-//    1. find the closest VICTIM tag
-//    2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
-//    3. fly to the land position & recheck the land position is in the VICTIM tag range
-//     if yes, land
-//     if no, select a new land position
-//    4. percise landing
-//  if yes, waitting for the other drone to detect the VICTIM tags more than 1.
-//    follow the steps above
-
-
 // find the closest point in the detected VICTIM tags
-int findClosestVICTIM(const Eigen::Vector3d& pos) {
+int findClosestVICTIM(const Eigen::Vector3d& pos , const int type) {
   double min_dist = std::numeric_limits<double>::max();
   int closest_tag = -1;
-  for (int i = 0; i < detected_VICTIM_tags_.size(); ++i) {
-    double dist = (detected_VICTIM_tags_[i].tag_position - pos).norm();
-    if (dist < min_dist) {
-      min_dist = dist;
+
+  if (type == 0)
+  {
+    for (int i = 0; i < detected_VICTIM_tags_.size(); ++i) {
+      // only horizontal distance
+      double horizontal_dist = (detected_VICTIM_tags_[i].tag_position - pos).head(2).norm();
+      double dist = (detected_VICTIM_tags_[i].tag_position - pos).norm();
+      if (horizontal_dist < min_dist) {
+        min_dist = horizontal_dist;
+        closest_tag = i;
+      }
+    }
+  }
+  else if (type == 1)
+  {
+    for (int i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
+      double dist = (other_detected_VICTIM_tag_[i] - pos).norm();
+      if (dist < min_dist) {
+        min_dist = dist;
+        closest_tag = i;
+      }
+    }
+  }
+  
+  return closest_tag;
+}
+
+int findClosestDANGER(const Eigen::Vector3d& pos) {
+  double min_dist = std::numeric_limits<double>::max();
+  int closest_tag = -1;
+
+  for (int i = 0; i < detected_DANGER_tags_.size(); ++i) {
+    // only horizontal distance
+    double horizontal_dist = (detected_DANGER_tags_[i].tag_position - pos).head(2).norm();
+    double dist = (detected_DANGER_tags_[i].tag_position - pos).norm();
+    if (horizontal_dist < min_dist) {
+      min_dist = horizontal_dist;
       closest_tag = i;
     }
   }
+  
   return closest_tag;
 }
 
@@ -122,11 +149,6 @@ void UavStateCallback(const mavros_msgs::StateConstPtr& msg) {
   last_uav_state = uav_state;
   uav_state = *msg;
 }
-
-// 切换到Land模式
-// if (uav_state.mode != "AUTO.LAND"){
-//     SetPX4Mode("AUTO.LAND");
-// }
 
 void SetPX4Mode(const std::string& mode) {
   mavros_msgs::SetMode set_mode;
@@ -774,6 +796,104 @@ void VisualizeTag()
 
 }
 
+void PX4_TAG_LAND()
+{
+  if (finished_wp_flag && !init_land_flag)
+  {
+    // Check detceted VICTIM tags is empty
+    if (detected_VICTIM_tags_.empty() && other_detected_VICTIM_tag_.empty())
+    {
+      ROS_WARN_STREAM(prename << ": No VICTIM tag detected !");
+      return;
+    }
+    else
+    {
+      if (!detected_VICTIM_tags_.empty())
+      {
+        //1. find the closest VICTIM tag
+        int closest_tag = findClosestVICTIM(odom_p , 0);
+        Eigen::Vector3d closest_tag_position = detected_VICTIM_tags_[closest_tag].tag_position;
+        init_land_p = closest_tag_position;
+
+        //2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
+        geometry_msgs::PoseStamped uav_land_pose;
+        uav_land_pose.header.stamp = ros::Time::now();
+        uav_land_pose.header.frame_id = "world";
+        uav_land_pose.pose.position.x = closest_tag_position(0);
+        uav_land_pose.pose.position.y = closest_tag_position(1);
+        uav_land_pose.pose.position.z = 1.0;
+        uav_land_pose_pub.publish(uav_land_pose);
+        init_land_flag = true;
+      }
+      else
+      {
+        //1. find the closest VICTIM tag
+        int closest_tag = findClosestVICTIM(odom_p , 1);
+        Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tag_[closest_tag];
+        init_land_p = closest_tag_position;
+
+        //2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
+        geometry_msgs::PoseStamped uav_land_pose;
+        uav_land_pose.header.stamp = ros::Time::now();
+        uav_land_pose.header.frame_id = "world";
+        uav_land_pose.pose.position.x = closest_tag_position(0);
+        uav_land_pose.pose.position.y = closest_tag_position(1);
+        uav_land_pose.pose.position.z = 1.0;
+        uav_land_pose_pub.publish(uav_land_pose);
+        init_land_flag = true;
+      }
+    }
+    
+  }
+  else
+  {
+    if (init_land_flag)
+    {
+      // check if near the land position
+      double distance = (odom_p - init_land_p).head(2).norm();
+      if (distance < 0.5)
+      {
+        // check if in the DANGER zone
+        int closest_tag = findClosestDANGER(odom_p);
+        Eigen::Vector3d closest_tag_position = detected_DANGER_tags_[closest_tag].tag_position;
+        double danger_distance = (odom_p - closest_tag_position).head(2).norm();
+        if (danger_distance > 1.0)
+        {
+          // 切换到Land模式
+          if (uav_state.mode != "AUTO.LAND"){
+              SetPX4Mode("AUTO.LAND");
+          }
+        }
+        else
+        {
+          // select a new init_land_p avoid the danger zone
+          init_land_flag = false;
+        }
+      }
+      else
+      {
+        ROS_WARN_STREAM(prename << ": Waitting for near the init land position !");
+      }
+    }
+    else
+    {
+      ROS_WARN_STREAM(prename << ": No waypoint finished !");
+      return;
+    }
+  }
+
+  
+  //  if no, continue to the next step
+  //    1. find the closest VICTIM tag
+  //    2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
+  //    3. fly to the land position & recheck the land position is in the VICTIM tag range
+  //     if yes, land
+  //     if no, select a new land position
+  //    4. percise landing
+  //  if yes, waitting for the other drone to detect the VICTIM tags more than 1.
+  //    follow the steps above
+}
+
 void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_msg, const nav_msgs::OdometryConstPtr& odom_msg)
 {
   detect_msgs = *tag_msg;
@@ -812,6 +932,13 @@ void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_m
   transform_tag_position();
 }
 
+
+void WpFinishedCallback(const std_msgs::EmptyConstPtr& wp_finished_msg)
+{
+  finished_wp_flag = true;
+  ROS_WARN_STREAM(prename << ": Waypoint finished !");
+}
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "tag_result_pub");
@@ -836,6 +963,7 @@ int main(int argc, char **argv)
   std::string topic_robot_odom;
   std::string topic_uav_state;
   std::string topic_uav_mode;
+  std::string topic_wp_finished;
 
   prename = uav_name + "_" + std::to_string(drone_id);
 
@@ -845,6 +973,7 @@ int main(int argc, char **argv)
     topic_robot_odom = "/" + prename + "/mavros/local_position/odom";
     topic_uav_state = "/" + prename + "/mavros/state";
     topic_uav_mode = "/" + prename + "/mavros/set_mode";
+    topic_wp_finished = "/drone_" + std::to_string(drone_id) + "/waypoint_finished";
   }
   else
   {
@@ -852,6 +981,7 @@ int main(int argc, char **argv)
     topic_robot_odom = "/iris_0/mavros/local_position/odom";
     topic_uav_state = "/iris_0/mavros/state";
     topic_uav_mode = "/iris_0/mavros/set_mode";
+    topic_wp_finished = "/drone_" + std::to_string(drone_id) + "/waypoint_finished";
   }
   ROS_WARN_STREAM(node_name << ": Tag topic_name: " << tag_topic_name);
   ROS_WARN_STREAM(node_name << ": Odom topic_name: " << topic_robot_odom);
@@ -860,6 +990,7 @@ int main(int argc, char **argv)
   ROS_WARN_STREAM(node_name << ": POSITION_THRESHOLD: " << POSITION_THRESHOLD);
   
   uav_state_sub = nh.subscribe<mavros_msgs::State>(topic_uav_state, 10, UavStateCallback);
+  wp_finished_sub = nh.subscribe<std_msgs::Empty>(topic_wp_finished, 10, WpFinishedCallback);
   px4_set_mode_client = nh.serviceClient<mavros_msgs::SetMode>(topic_uav_mode);
   // ros::Subscriber detect_sub = nh.subscribe<apriltag_ros::AprilTagDetectionArray>(tag_topic_name, 1, detect_callback);
   // ros::Subscriber uav_odom_ = nh.subscribe<nav_msgs::Odometry>(topic_robot_odom, 10, Odomcallback);
@@ -877,10 +1008,14 @@ int main(int argc, char **argv)
   sync_tag_odom.connectInput(tag_sub, odom_sub);
   sync_tag_odom.registerCallback(boost::bind(&Tag_Odom_callback, _1, _2));
 
+  std::string uav_land_pose_topic = "/Apriltag/land_goal_" + std::to_string(drone_id);
+
   vis_tag_pub = nh.advertise<visualization_msgs::MarkerArray>("tag_result/vis", 1);
+  uav_land_pose_pub = nh.advertise<geometry_msgs::PoseStamped>(uav_land_pose_topic, 1);
   uav_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("uav_pose", 1);
   uav_model_pub = nh.advertise<visualization_msgs::MarkerArray>("uav_model", 1);
   fov_pub = nh.advertise<visualization_msgs::MarkerArray>("uav_down_fov",5);
+
 
   std_msgs::ColorRGBA color;
   for(int i = 0; i < colorR.size(); i++){
@@ -916,6 +1051,7 @@ int main(int argc, char **argv)
   while (ros::ok())
   {
     VisualizeTag();
+    PX4_TAG_LAND();
     ros::spinOnce();
     loop_rate.sleep();
   }
