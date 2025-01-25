@@ -24,10 +24,13 @@
 #include <message_filters/time_synchronizer.h>
 #include <std_msgs/ColorRGBA.h>
 #include <kf/kalmanFilter.h>
+#include <mavros_msgs/SetMode.h>
+#include <mavros_msgs/State.h>
 
 ros::Publisher vis_tag_pub;
 ros::Publisher uav_pose_pub;
 ros::Publisher uav_model_pub;
+ros::Subscriber uav_state_sub;
 geometry_msgs::PoseStamped uav_pose;
 visualization_msgs::MarkerArray vis_uav_model;
 ros::Publisher fov_pub;
@@ -35,9 +38,12 @@ std::vector<ros::Publisher> VICTIM_pose_pub;
 std::vector<ros::Publisher> DANGER_pose_pub;
 std::vector<geometry_msgs::PoseStamped> VICTIM_pose_list;
 std::vector<geometry_msgs::PoseStamped> DANGER_pose_list;
+ros::ServiceClient px4_set_mode_client;//设置飞行模式
 std::string node_name;
 std::string prename;
+std::string uav_name;
 bool use_prename;
+int drone_id;
 int VICTIM_num;
 int DANGER_num;
 bool received_odom = false;
@@ -82,6 +88,56 @@ std::vector<double> colorG = {150, 229, 0, 0, 44, 212, 110, 255, 0, 165, 84};
 std::vector<double> colorB = {150, 238, 255, 255, 44, 112, 50, 0, 255, 0, 76};
 std::vector<std_msgs::ColorRGBA> COLOR_LISTS;
 
+mavros_msgs::State uav_state;//无人机状态
+mavros_msgs::State last_uav_state;//上一时刻无人机状态
+
+
+// Check detceted VICTIM tags is empty
+//  if no, continue to the next step
+//    1. find the closest VICTIM tag
+//    2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
+//    3. fly to the land position & recheck the land position is in the VICTIM tag range
+//     if yes, land
+//     if no, select a new land position
+//    4. percise landing
+//  if yes, waitting for the other drone to detect the VICTIM tags more than 1.
+//    follow the steps above
+
+
+// find the closest point in the detected VICTIM tags
+int findClosestVICTIM(const Eigen::Vector3d& pos) {
+  double min_dist = std::numeric_limits<double>::max();
+  int closest_tag = -1;
+  for (int i = 0; i < detected_VICTIM_tags_.size(); ++i) {
+    double dist = (detected_VICTIM_tags_[i].tag_position - pos).norm();
+    if (dist < min_dist) {
+      min_dist = dist;
+      closest_tag = i;
+    }
+  }
+  return closest_tag;
+}
+
+void UavStateCallback(const mavros_msgs::StateConstPtr& msg) {
+  last_uav_state = uav_state;
+  uav_state = *msg;
+}
+
+// 切换到Land模式
+// if (uav_state.mode != "AUTO.LAND"){
+//     SetPX4Mode("AUTO.LAND");
+// }
+
+void SetPX4Mode(const std::string& mode) {
+  mavros_msgs::SetMode set_mode;
+  set_mode.request.custom_mode = mode;
+  if (px4_set_mode_client.call(set_mode)) {
+    ROS_WARN_STREAM("Set mode to " << mode);
+  } else {
+    ROS_ERROR_STREAM("Failed to set mode to " << mode);
+  }
+}
+
 std::vector<geometry_msgs::Point> generateCirclePoints(double radius, int num_points) {
   std::vector<geometry_msgs::Point> points;
   for (int i = 0; i < num_points; ++i) {
@@ -104,7 +160,6 @@ std_msgs::ColorRGBA Id2Color(int idx, double a){
   color.a = a;
   return color;
 }
-
 
 void Kalman_Filter_Init(double init_x, double init_y, double init_z, kalman_filter &kf) {
   // 状态向量维度和观测向量维度
@@ -577,7 +632,7 @@ visualization_msgs::Marker VisCircleTag(const geometry_msgs::PoseStamped tag_pos
   tag_circle.pose.position = tag_pose.pose.position;
   tag_circle.pose.orientation.w = 1.0;
   tag_circle.points = generateCirclePoints(1.0, 100);
-  tag_circle.scale.x = 0.02;//线宽
+  tag_circle.scale.x = 0.04;//线宽
   tag_circle.color.a = 1.0;
   
   if (id == 0)
@@ -762,7 +817,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "tag_result_pub");
   ros::NodeHandle nh("~");
   node_name = ros::this_node::getName();
-  nh.param("prename",prename,std::string("iris"));
+  nh.param("uav_name",uav_name,std::string("iris"));
   nh.param("use_prename", use_prename, false);
   nh.param("VICTIM_num", VICTIM_num, 8);
   nh.param("DANGER_num", DANGER_num, 4);
@@ -770,6 +825,7 @@ int main(int argc, char **argv)
   nh.param("offset_x", offset_x, 0.0);
   nh.param("offset_y", offset_y, 0.0);
   nh.param("offset_z", offset_z, 0.0);
+  nh.param("drone_id", drone_id, 0);
 
   body2Cam << 0,  -1,   0,  offset_x,
              -1,   0,   0,  offset_y,
@@ -778,16 +834,24 @@ int main(int argc, char **argv)
 
   std::string tag_topic_name;
   std::string topic_robot_odom;
+  std::string topic_uav_state;
+  std::string topic_uav_mode;
+
+  prename = uav_name + "_" + std::to_string(drone_id);
 
   if (use_prename)
   {
     tag_topic_name = "/" + prename + "/tag_detections";
     topic_robot_odom = "/" + prename + "/mavros/local_position/odom";
+    topic_uav_state = "/" + prename + "/mavros/state";
+    topic_uav_mode = "/" + prename + "/mavros/set_mode";
   }
   else
   {
     tag_topic_name = "/tag_detections";
     topic_robot_odom = "/iris_0/mavros/local_position/odom";
+    topic_uav_state = "/iris_0/mavros/state";
+    topic_uav_mode = "/iris_0/mavros/set_mode";
   }
   ROS_WARN_STREAM(node_name << ": Tag topic_name: " << tag_topic_name);
   ROS_WARN_STREAM(node_name << ": Odom topic_name: " << topic_robot_odom);
@@ -795,6 +859,8 @@ int main(int argc, char **argv)
   ROS_WARN_STREAM(node_name << ": DANGER_num: " << DANGER_num);
   ROS_WARN_STREAM(node_name << ": POSITION_THRESHOLD: " << POSITION_THRESHOLD);
   
+  uav_state_sub = nh.subscribe<mavros_msgs::State>(topic_uav_state, 10, UavStateCallback);
+  px4_set_mode_client = nh.serviceClient<mavros_msgs::SetMode>(topic_uav_mode);
   // ros::Subscriber detect_sub = nh.subscribe<apriltag_ros::AprilTagDetectionArray>(tag_topic_name, 1, detect_callback);
   // ros::Subscriber uav_odom_ = nh.subscribe<nav_msgs::Odometry>(topic_robot_odom, 10, Odomcallback);
 

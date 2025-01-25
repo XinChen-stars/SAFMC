@@ -6,7 +6,8 @@
   <arg name="image_topic" default="image_raw" />
   <arg name="queue_size" default="1" />
   <arg name="use_prename" default="false" />
-  <arg name="prename" default="iris"/>
+  <arg name="uav_name" default="iris"/>
+  <arg name="drone_id" default="0"/>
   <arg name="stateEstimationTopic" default="/iris_0/mavros/local_position/odom"/>
 
   <!-- apriltag_ros continuous detection node -->
@@ -25,7 +26,8 @@
   <!-- detection result visulization -->
   <node pkg="apriltag_ros" type="tag_result_pub" name="tag_result_pub" output="screen" >
       <param name="use_prename" value="$(arg use_prename)" />
-      <param name="prename" value="$(arg prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_id" value="$(arg drone_id)" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
       <param name="DANGER_num" value="4" />
