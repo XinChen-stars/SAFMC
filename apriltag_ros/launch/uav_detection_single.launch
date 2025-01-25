@@ -5,16 +5,17 @@
   <arg name="camera_name" default="/iris_0/camera" />
   <arg name="image_topic" default="image_raw" />
   <arg name="queue_size" default="1" />
-  <arg name="use_prename" default="false" />
+  <arg name="use_prename" default="true" />
   <arg name="uav_name" default="iris"/>
   <arg name="drone_id" default="0"/>
   <arg name="stateEstimationTopic" default="/iris_0/mavros/local_position/odom"/>
 
   <!-- apriltag_ros continuous detection node -->
-  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_$(arg drone_id)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
     <!-- Remap topics from those used in code to those on the ROS network -->
     <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
     <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+    <remap from="tag_detections" to="/iris_0/tag_detections" />
 
     <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
     <param name="queue_size" type="int" value="$(arg queue_size)" />
@@ -36,7 +37,7 @@
       <param name="offset_z" value="0.0" />
   </node>
   <!-- uav visulization -->
-  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
+  <!-- <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
     <remap from="~odom" to="$(arg stateEstimationTopic)"/>
     <param name="color/a" value="1.0"/>
     <param name="color/r" value="0.0"/>        
@@ -50,7 +51,7 @@
     <param name="tf45" value="false"/>
     <param name="drone_id" value="0"/>
     <param name="search_height" value="1.5"/>
-  </node>
+  </node> -->
   <!-- rviz  -->
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apriltag_ros)/rviz/tag_det.rviz" required="true" output="screen"/>
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apriltag_ros)/rviz/tag_det.rviz" required="true" output="screen"/> -->
 </launch>
