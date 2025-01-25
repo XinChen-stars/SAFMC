@@ -202,14 +202,14 @@ int main(int argc, char **argv)
 
 	while(ros::ok())
 	{
-		if( current_state.mode != "OFFBOARD"){
+		if( current_state.mode != "OFFBOARD" && current_state.mode != "AUTO.LAND"){
 			if( px4_set_mode_client.call(offb_set_mode) &&	offb_set_mode.response.mode_sent){
 				ROS_WARN_STREAM(pre_name << " : Offboard enabled");
 			}
 			last_request = ros::Time::now();
 		}
 		else {
-			if( !current_state.armed)
+			if( !current_state.armed && current_state.mode != "AUTO.LAND")
 			{
 				if( px4_arming_client.call(arm_cmd) &&arm_cmd.response.success)
 				{
