@@ -587,240 +587,2128 @@ Visualization Manager:
       Value: true
     - Class: rviz/Group
       Displays:
-        - Class: rviz/MarkerArray
-          Enabled: true
-          Marker Topic: /tag_result_pub/tag_result/vis
-          Name: TAG_VIS
-          Namespaces:
-            {}
-          Queue Size: 100
-          Value: true
         - Class: rviz/Group
           Displays:
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+            - Class: rviz/MarkerArray
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM1_pose
-              Unreliable: false
+              Marker Topic: /tag_result_pub_0/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
               Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM2_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_0/DANGER4_pose
+                  Unreliable: false
+                  Value: true
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM3_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM4_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM5_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM6_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM7_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/VICTIM8_pose
-              Unreliable: false
-              Value: true
+              Name: DANGER ZONE
           Enabled: true
-          Name: VICTIM
+          Name: uav_0_tag
         - Class: rviz/Group
           Displays:
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+            - Class: rviz/MarkerArray
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/DANGER1_pose
-              Unreliable: false
+              Marker Topic: /tag_result_pub_1/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
               Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/DANGER2_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_1/DANGER4_pose
+                  Unreliable: false
+                  Value: true
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/DANGER3_pose
-              Unreliable: false
-              Value: true
-            - Alpha: 1
-              Axes Length: 0.5
-              Axes Radius: 0.10000000149011612
-              Class: rviz/Pose
-              Color: 255; 25; 0
-              Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
-              Name: Pose
-              Queue Size: 10
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
-              Shape: Axes
-              Topic: /tag_result_pub/DANGER4_pose
-              Unreliable: false
-              Value: true
+              Name: DANGER ZONE
           Enabled: true
-          Name: DANGER ZONE
-        - Class: rviz/Image
-          Enabled: false
-          Image Topic: /tag_detections_image
-          Max Value: 1
-          Median window: 5
-          Min Value: 0
-          Name: Image
-          Normalize Range: true
-          Queue Size: 2
-          Transport Hint: raw
-          Unreliable: false
-          Value: false
+          Name: uav_1_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_2/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_2/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_2_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_3/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_3/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_3_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_4/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_4/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_4_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_5/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_5/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_5_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_6/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_6/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_6_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_7/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_7/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_7_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_8/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_8/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_8_tag
+        - Class: rviz/Group
+          Displays:
+            - Class: rviz/MarkerArray
+              Enabled: true
+              Marker Topic: /tag_result_pub_9/tag_result/vis
+              Name: TAG_VIS
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: true
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM4_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM5_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM6_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM7_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/VICTIM8_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: VICTIM
+            - Class: rviz/Group
+              Displays:
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/DANGER1_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/DANGER2_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/DANGER3_pose
+                  Unreliable: false
+                  Value: true
+                - Alpha: 1
+                  Axes Length: 0.5
+                  Axes Radius: 0.10000000149011612
+                  Class: rviz/Pose
+                  Color: 255; 25; 0
+                  Enabled: true
+                  Head Length: 0.30000001192092896
+                  Head Radius: 0.10000000149011612
+                  Name: Pose
+                  Queue Size: 10
+                  Shaft Length: 1
+                  Shaft Radius: 0.05000000074505806
+                  Shape: Axes
+                  Topic: /tag_result_pub_9/DANGER4_pose
+                  Unreliable: false
+                  Value: true
+              Enabled: true
+              Name: DANGER ZONE
+          Enabled: true
+          Name: uav_9_tag
       Enabled: true
-      Name: SAFMC
-    - Class: rviz/Image
-      Enabled: false
-      Image Topic: /iris_0/realsense/depth_camera/color/image_raw
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: Image
-      Normalize Range: true
-      Queue Size: 2
-      Transport Hint: raw
-      Unreliable: false
-      Value: false
+      Name: TAG_VIS
     - Class: rviz/Group
       Displays:
         - Class: rviz/Group
@@ -882,7 +2770,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_1/camera_pose_visual
               Name: fov
               Namespaces:
-                CameraPoseVisualization: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/MarkerArray
@@ -890,7 +2778,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_1/uav_model
               Name: model_vis
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Alpha: 1
@@ -914,7 +2802,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_1/uav_id
               Name: id
               Namespaces:
-                uav_id: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -922,7 +2810,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_1/trajectory
               Name: path
               Namespaces:
-                world: true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -934,7 +2822,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_2/camera_pose_visual
               Name: fov
               Namespaces:
-                CameraPoseVisualization: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/MarkerArray
@@ -942,7 +2830,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_2/uav_model
               Name: model_vis
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Alpha: 1
@@ -966,7 +2854,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_2/uav_id
               Name: id
               Namespaces:
-                uav_id: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -974,7 +2862,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_2/trajectory
               Name: path
               Namespaces:
-                world: true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -986,7 +2874,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_3/camera_pose_visual
               Name: fov
               Namespaces:
-                CameraPoseVisualization: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/MarkerArray
@@ -994,7 +2882,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_3/uav_model
               Name: model_vis
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Alpha: 1
@@ -1018,7 +2906,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_3/uav_id
               Name: id
               Namespaces:
-                uav_id: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1026,7 +2914,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_3/trajectory
               Name: path
               Namespaces:
-                world: true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -1038,7 +2926,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_4/camera_pose_visual
               Name: fov
               Namespaces:
-                CameraPoseVisualization: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/MarkerArray
@@ -1046,7 +2934,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_4/uav_model
               Name: model_vis
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Alpha: 1
@@ -1070,7 +2958,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_4/uav_id
               Name: id
               Namespaces:
-                uav_id: true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1078,7 +2966,7 @@ Visualization Manager:
               Marker Topic: /odom_visualization_4/trajectory
               Name: path
               Namespaces:
-                world: true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -1502,7 +3390,7 @@ Visualization Manager:
               Marker Topic: /drone_1_ego_planner_node/init_list
               Name: global
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1510,7 +3398,7 @@ Visualization Manager:
               Marker Topic: /drone_1_ego_planner_node/optimal_list
               Name: opti
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1518,7 +3406,7 @@ Visualization Manager:
               Marker Topic: /drone_1_ego_planner_node/goal_point
               Name: goal
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1526,7 +3414,7 @@ Visualization Manager:
               Marker Topic: /drone_1_ego_planner_node/failed_list
               Name: astar
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -1594,7 +3482,7 @@ Visualization Manager:
               Marker Topic: /drone_2_ego_planner_node/init_list
               Name: global
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1602,7 +3490,7 @@ Visualization Manager:
               Marker Topic: /drone_2_ego_planner_node/optimal_list
               Name: opti
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1610,7 +3498,7 @@ Visualization Manager:
               Marker Topic: /drone_2_ego_planner_node/goal_point
               Name: goal
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1618,7 +3506,7 @@ Visualization Manager:
               Marker Topic: /drone_2_ego_planner_node/failed_list
               Name: astar
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -1686,7 +3574,7 @@ Visualization Manager:
               Marker Topic: /drone_3_ego_planner_node/init_list
               Name: global
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1694,7 +3582,7 @@ Visualization Manager:
               Marker Topic: /drone_3_ego_planner_node/optimal_list
               Name: opti
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1702,7 +3590,7 @@ Visualization Manager:
               Marker Topic: /drone_3_ego_planner_node/goal_point
               Name: goal
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1710,7 +3598,7 @@ Visualization Manager:
               Marker Topic: /drone_3_ego_planner_node/failed_list
               Name: astar
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -1778,7 +3666,7 @@ Visualization Manager:
               Marker Topic: /drone_4_ego_planner_node/init_list
               Name: global
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1786,7 +3674,7 @@ Visualization Manager:
               Marker Topic: /drone_4_ego_planner_node/optimal_list
               Name: opti
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1794,7 +3682,7 @@ Visualization Manager:
               Marker Topic: /drone_4_ego_planner_node/goal_point
               Name: goal
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1802,7 +3690,7 @@ Visualization Manager:
               Marker Topic: /drone_4_ego_planner_node/failed_list
               Name: astar
               Namespaces:
-                "": true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -2296,7 +4184,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 23.874177932739258
+      Distance: 26.35403823852539
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -2314,7 +4202,7 @@ Visualization Manager:
       Near Clip Distance: 0.009999999776482582
       Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 3.1320717334747314
+      Yaw: 3.1370773315429688
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 40.93450164794922
@@ -2358,7 +4246,7 @@ Window Geometry:
   Hide Right Dock: false
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000020f000004f9fc0200000014fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000004f9000000c700fffffffb0000000a0049006d006100670065000000026f0000015a0000001600fffffffb0000000a0056006900650077007300000002340000013c000000a000fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d00650072006100000001d1000000b50000000000000000fb0000000a006400650070007400680000000254000002e00000001600fffffffb0000000a0049006d006100670065000000052b000000910000001600fffffffb0000000a0049006d00610067006500000003180000007f0000001600fffffffb0000000a0049006d0061006700650000000346000001ee0000001600fffffffb0000000a0049006d0061006700650000000476000000d80000000000000000fb0000000a0049006d00610067006501000002170000018d0000000000000000fb0000000a0049006d00610067006501000003aa000001b40000000000000000fb0000000a0049006d00610067006501000003f60000013e0000000000000000fb0000000a0049006d00610067006501000001fe000001990000000000000000000000010000010f00000385fc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000006100000003bfc0100000002fb0000000800540069006d00650000000000000006100000035c00fffffffb0000000800540069006d00650100000000000004500000000000000000000007df000004f900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000020f000004f9fc0200000014fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000004f9000000c700fffffffb0000000a0049006d006100670065000000026f0000015a0000000000000000fb0000000a0056006900650077007300000002340000013c000000a000fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d00650072006100000001d1000000b50000000000000000fb0000000a006400650070007400680000000254000002e00000001600fffffffb0000000a0049006d006100670065000000052b000000910000001600fffffffb0000000a0049006d00610067006500000003180000007f0000001600fffffffb0000000a0049006d0061006700650000000346000001ee0000000000000000fb0000000a0049006d0061006700650000000476000000d80000000000000000fb0000000a0049006d00610067006501000002170000018d0000000000000000fb0000000a0049006d00610067006501000003aa000001b40000000000000000fb0000000a0049006d00610067006501000003f60000013e0000000000000000fb0000000a0049006d00610067006501000001fe000001990000000000000000000000010000010f00000385fc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000006100000003bfc0100000002fb0000000800540069006d00650000000000000006100000035c00fffffffb0000000800540069006d00650100000000000004500000000000000000000007df000004f900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
