@@ -48,6 +48,7 @@ std::string uav_name;
 bool use_prename;
 bool finished_wp_flag = false;
 bool init_land_flag = false;
+bool final_land_flag = false;
 int drone_id;
 int VICTIM_num;
 int DANGER_num;
@@ -58,7 +59,8 @@ Eigen::Matrix4d local2Cam; // from local frame to camera frame
 Eigen::Matrix3d local2Cam_rotate;
 double offset_x, offset_y, offset_z;
 
-Eigen::Vector3d odom_p, odom_v, init_land_p;
+Eigen::Vector3d odom_p, odom_v;
+Eigen::Vector3d init_land_p, final_land_p;
 Eigen::Quaterniond odom_q;
 
 apriltag_ros::AprilTagDetection detect_msg;
@@ -107,7 +109,7 @@ int findClosestVICTIM(const Eigen::Vector3d& pos , const int type) {
     for (int i = 0; i < detected_VICTIM_tags_.size(); ++i) {
       // only horizontal distance
       double horizontal_dist = (detected_VICTIM_tags_[i].tag_position - pos).head(2).norm();
-      double dist = (detected_VICTIM_tags_[i].tag_position - pos).norm();
+      ROS_ERROR_STREAM(prename << " VICTIM ID: " << i << "  horizontal_dist: " << horizontal_dist);
       if (horizontal_dist < min_dist) {
         min_dist = horizontal_dist;
         closest_tag = i;
@@ -117,9 +119,10 @@ int findClosestVICTIM(const Eigen::Vector3d& pos , const int type) {
   else if (type == 1)
   {
     for (int i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
-      double dist = (other_detected_VICTIM_tag_[i] - pos).norm();
-      if (dist < min_dist) {
-        min_dist = dist;
+      // only horizontal distance
+      double horizontal_dist = (detected_VICTIM_tags_[i].tag_position - pos).head(2).norm();
+      if (horizontal_dist < min_dist) {
+        min_dist = horizontal_dist;
         closest_tag = i;
       }
     }
@@ -135,7 +138,6 @@ int findClosestDANGER(const Eigen::Vector3d& pos) {
   for (int i = 0; i < detected_DANGER_tags_.size(); ++i) {
     // only horizontal distance
     double horizontal_dist = (detected_DANGER_tags_[i].tag_position - pos).head(2).norm();
-    double dist = (detected_DANGER_tags_[i].tag_position - pos).norm();
     if (horizontal_dist < min_dist) {
       min_dist = horizontal_dist;
       closest_tag = i;
@@ -480,7 +482,7 @@ void transform_tag_position()
         // 新的victim目标
         if (isNewTarget(ENU_pose,0))
         {
-          ROS_INFO("New VICTIM detected");
+          // ROS_INFO("New VICTIM detected");
         }
       }
     }
@@ -512,7 +514,7 @@ void transform_tag_position()
         // 新的danger zone目标
         if (isNewTarget(ENU_pose,1))
         {
-          ROS_INFO("New DANGER ZONE detected");
+          // ROS_INFO("New DANGER ZONE detected");
         }
       }
     }
@@ -710,9 +712,9 @@ void VisualizeTag()
       continue;
     }
 
-    ROS_INFO_STREAM( "VICTIM Target id: " << VICTIM_target_id + 1 << 
-            " Target position: " << target.tag_position.transpose() 
-            << " Target record num: " << target.record_num);
+    // ROS_INFO_STREAM( "VICTIM Target id: " << VICTIM_target_id + 1 << 
+    //         " Target position: " << target.tag_position.transpose() 
+    //         << " Target record num: " << target.record_num);
 
     // 发布位置
     geometry_msgs::PoseStamped VICTIM_pose;
@@ -755,9 +757,9 @@ void VisualizeTag()
       continue;
     }
 
-    ROS_INFO_STREAM( "DANGER Target id: " << DANGER_target_id + 1 << 
-            " Target position: " << target.tag_position.transpose() 
-            << " Target record num: " << target.record_num);
+    // ROS_INFO_STREAM( "DANGER Target id: " << DANGER_target_id + 1 << 
+    //         " Target position: " << target.tag_position.transpose() 
+    //         << " Target record num: " << target.record_num);
 
     // 发布位置
     geometry_msgs::PoseStamped DANGER_pose;
@@ -803,7 +805,7 @@ void PX4_TAG_LAND()
     // Check detceted VICTIM tags is empty
     if (detected_VICTIM_tags_.empty() && other_detected_VICTIM_tag_.empty())
     {
-      ROS_WARN_STREAM(prename << ": No VICTIM tag detected !");
+      // ROS_INFO_STREAM(prename << ": No VICTIM tag detected !");
       return;
     }
     else
@@ -847,37 +849,95 @@ void PX4_TAG_LAND()
   }
   else
   {
-    if (init_land_flag)
+    if (init_land_flag && !final_land_flag)
     {
       // check if near the land position
       double distance = (odom_p - init_land_p).head(2).norm();
-      if (distance < 0.5)
+      if (distance < 0.3)
       {
-        // check if in the DANGER zone
-        int closest_tag = findClosestDANGER(odom_p);
-        Eigen::Vector3d closest_tag_position = detected_DANGER_tags_[closest_tag].tag_position;
-        double danger_distance = (odom_p - closest_tag_position).head(2).norm();
-        if (danger_distance > 1.0)
+        //1. find the closest VICTIM tag
+        if (!detected_VICTIM_tags_.empty())
         {
-          // 切换到Land模式
-          if (uav_state.mode != "AUTO.LAND"){
-              SetPX4Mode("AUTO.LAND");
+          int closest_tag = findClosestVICTIM(odom_p , 0);
+          final_land_p = detected_VICTIM_tags_[closest_tag].tag_position;
+        }
+        else
+        {
+          int closest_tag = findClosestVICTIM(odom_p , 1);
+          final_land_p = other_detected_VICTIM_tag_[closest_tag];
+        }
+        final_land_flag = true;
+        ROS_ERROR_STREAM(prename << ": From init land to Final land !");
+        geometry_msgs::PoseStamped uav_land_pose;
+        uav_land_pose.header.stamp = ros::Time::now();
+        uav_land_pose.header.frame_id = "world";
+        uav_land_pose.pose.position.x = final_land_p(0);
+        uav_land_pose.pose.position.y = final_land_p(1);
+        uav_land_pose.pose.position.z = 1.0;
+        uav_land_pose_pub.publish(uav_land_pose);
+      }
+      else
+      {
+        geometry_msgs::PoseStamped uav_land_pose;
+        uav_land_pose.header.stamp = ros::Time::now();
+        uav_land_pose.header.frame_id = "world";
+        uav_land_pose.pose.position.x = init_land_p(0);
+        uav_land_pose.pose.position.y = init_land_p(1);
+        uav_land_pose.pose.position.z = 1.0;
+        uav_land_pose_pub.publish(uav_land_pose);
+        ROS_INFO_STREAM(prename << ": Waitting for near the init land position !");
+      }
+    }
+    else if (init_land_flag && final_land_flag)
+    {
+      // check if near the land position
+      double distance = (odom_p - final_land_p).head(2).norm();
+      if (distance < 0.3)
+      {
+        // check if in the DANGER zone, if have detected DANGER tags
+        if (!detected_DANGER_tags_.empty())
+        {
+          int closest_danger = findClosestDANGER(odom_p);
+          Eigen::Vector3d closest_danger_position = detected_DANGER_tags_[closest_danger].tag_position;
+          double danger_distance = (odom_p - closest_danger_position).head(2).norm();
+          if (danger_distance > 1.0)
+          {
+            // 切换到Land模式
+            if (uav_state.mode != "AUTO.LAND"){
+                ROS_ERROR_STREAM(prename << ": NO in the Danger Zone , Start to land !");
+                SetPX4Mode("AUTO.LAND");
+            }
+          }
+          else
+          {
+            // select a new final_land_p avoid the danger zone
+            
           }
         }
         else
         {
-          // select a new init_land_p avoid the danger zone
-          init_land_flag = false;
+          // 切换到Land模式
+          if (uav_state.mode != "AUTO.LAND"){
+              ROS_WARN_STREAM(prename << ": Without Danger Zone , Start to land !");
+              SetPX4Mode("AUTO.LAND");
+          }
         }
       }
       else
       {
-        ROS_WARN_STREAM(prename << ": Waitting for near the init land position !");
-      }
+        geometry_msgs::PoseStamped uav_land_pose;
+        uav_land_pose.header.stamp = ros::Time::now();
+        uav_land_pose.header.frame_id = "world";
+        uav_land_pose.pose.position.x = final_land_p(0);
+        uav_land_pose.pose.position.y = final_land_p(1);
+        uav_land_pose.pose.position.z = 1.0;
+        uav_land_pose_pub.publish(uav_land_pose);
+        // ROS_INFO_STREAM(prename << ": Waitting for near the final land position !");
+      } 
     }
     else
     {
-      ROS_WARN_STREAM(prename << ": No waypoint finished !");
+      // ROS_INFO_STREAM(prename << ": No waypoint finished !");
       return;
     }
   }
@@ -899,7 +959,7 @@ void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_m
   detect_msgs = *tag_msg;
   if (detect_msgs.detections.size() == 0)
   {
-    ROS_WARN_STREAM(node_name << ": No Tag detected !");
+    // ROS_WARN_STREAM(node_name << ": No Tag detected !");
     return;
   }
   if (odom_msg->pose.pose.position.x == 0 && odom_msg->pose.pose.position.y == 0 && odom_msg->pose.pose.position.z == 0)
@@ -1050,6 +1110,7 @@ int main(int argc, char **argv)
   ros::Rate loop_rate(100);
   while (ros::ok())
   {
+    // ROS_WARN_STREAM(prename << "VICTIM_num: " << detected_VICTIM_tags_.size() << " DANGER_num: " << detected_DANGER_tags_.size());
     VisualizeTag();
     PX4_TAG_LAND();
     ros::spinOnce();
