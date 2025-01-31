@@ -1,0 +1,3 @@
+geometry_msgs/Point position
+bool is_claimed
+int32 target_id

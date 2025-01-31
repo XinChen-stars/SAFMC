@@ -13,7 +13,10 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <apriltag_ros/AprilTagDetectionArray.h>
 #include <apriltag_ros/AprilTagDetection.h>
+#include <apriltag_ros/DroneTagDetection.h>
+#include <apriltag_ros/DroneTagDetectionArray.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Point.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <visualization_msgs/Marker.h>
 #include <string>
@@ -27,13 +30,17 @@
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <std_msgs/Empty.h>
+#include <unordered_map>
+#include <unordered_set>
 
 ros::Publisher vis_tag_pub;
 ros::Publisher uav_pose_pub;
 ros::Publisher uav_model_pub;
 ros::Publisher uav_land_pose_pub;
+ros::Publisher drone_detect_pub;
 ros::Subscriber uav_state_sub;
 ros::Subscriber wp_finished_sub;
+ros::Subscriber other_drone_detect_sub;
 geometry_msgs::PoseStamped uav_pose;
 visualization_msgs::MarkerArray vis_uav_model;
 ros::Publisher fov_pub;
@@ -61,10 +68,16 @@ double offset_x, offset_y, offset_z;
 
 Eigen::Vector3d odom_p, odom_v;
 Eigen::Vector3d init_land_p, final_land_p;
+int land_p_target_id;
 Eigen::Quaterniond odom_q;
 
 apriltag_ros::AprilTagDetection detect_msg;
 apriltag_ros::AprilTagDetectionArray detect_msgs;
+apriltag_ros::DroneTagDetection drone_detect_msg;
+apriltag_ros::DroneTagDetectionArray drone_detect_msgs;
+std::unordered_set<int32_t> known_drone_ids;
+std::unordered_map<int32_t, ros::Time> known_drone_timestamps;
+std::unordered_map<int32_t, apriltag_ros::DroneTagDetectionArray> other_drone_detect_msgs;
 geometry_msgs::PoseStamped tag0_pose;
 geometry_msgs::PoseStamped tag1_pose;
 geometry_msgs::PoseStamped tag2_pose;
@@ -852,6 +865,7 @@ void PX4_TAG_LAND()
         //1. find the closest VICTIM tag
         int closest_tag = findClosestVICTIM(odom_p , 0);
         Eigen::Vector3d closest_tag_position = detected_VICTIM_tags_[closest_tag].tag_position;
+        land_p_target_id = closest_tag;
         init_land_p = closest_tag_position;
 
         //2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
@@ -869,6 +883,7 @@ void PX4_TAG_LAND()
         //1. find the closest VICTIM tag
         int closest_tag = findClosestVICTIM(odom_p , 1);
         Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tag_[closest_tag];
+        land_p_target_id = closest_tag;
         init_land_p = closest_tag_position;
 
         //2. select the land position around the VICTIM tag within the range of 1m & not in the danger zone with the range of 1m
@@ -895,13 +910,11 @@ void PX4_TAG_LAND()
         //1. find the closest VICTIM tag
         if (!detected_VICTIM_tags_.empty())
         {
-          int closest_tag = findClosestVICTIM(odom_p , 0);
-          final_land_p = detected_VICTIM_tags_[closest_tag].tag_position;
+          final_land_p = detected_VICTIM_tags_[land_p_target_id].tag_position;
         }
         else
         {
-          int closest_tag = findClosestVICTIM(odom_p , 1);
-          final_land_p = other_detected_VICTIM_tag_[closest_tag];
+          final_land_p = other_detected_VICTIM_tag_[land_p_target_id];
         }
         final_land_flag = true;
         ROS_WARN_STREAM(prename << ": From init land to Final land !");
@@ -952,13 +965,11 @@ void PX4_TAG_LAND()
             Eigen::Vector3d closest_victim_position;
             if (!detected_VICTIM_tags_.empty())
             {
-              int closest_tag = findClosestVICTIM(odom_p , 0);
-              closest_victim_position = detected_VICTIM_tags_[closest_tag].tag_position;
+              closest_victim_position = detected_VICTIM_tags_[land_p_target_id].tag_position;
             }
             else
             {
-              int closest_tag = findClosestVICTIM(odom_p , 1);
-              closest_victim_position = other_detected_VICTIM_tag_[closest_tag];
+              closest_victim_position = other_detected_VICTIM_tag_[land_p_target_id];
             }
             final_land_p = SelectNewLandPosition(closest_victim_position, closest_danger_position);
             geometry_msgs::PoseStamped uav_land_pose;
@@ -1055,6 +1066,70 @@ void WpFinishedCallback(const std_msgs::EmptyConstPtr& wp_finished_msg)
   ROS_WARN_STREAM(prename << ": Waypoint finished !");
 }
 
+void OtherDroneDetectCallback(const apriltag_ros::DroneTagDetectionArrayConstPtr& other_drone_detect_msg)
+{
+  int32_t received_drone_id = other_drone_detect_msg->drone_id;
+  ros::Time received_time = other_drone_detect_msg->header.stamp;
+
+  // 判断drone_id是否为本机drone_id
+  if (received_drone_id == drone_id)
+  {
+    return;
+  }
+  
+  // 如果该无人机的 ID 已经接收过消息，检查时间戳
+  if (known_drone_ids.find(received_drone_id) != known_drone_ids.end()) {
+    // 如果新消息的时间戳更晚，更新存储
+    if (received_time > known_drone_timestamps[received_drone_id]) {
+      ROS_INFO_STREAM(prename << ": Updated detection from drone[" << received_drone_id << "]");
+
+      // 删除旧的消息（替换为新消息）
+      other_drone_detect_msgs.erase(received_drone_id);
+
+      // 更新时间戳并更新消息
+      known_drone_timestamps[received_drone_id] = received_time;
+      other_drone_detect_msgs[received_drone_id] = *other_drone_detect_msg;
+    } 
+    else {
+      ROS_WARN_STREAM(prename << ": Discarded outdated message from drone[" << received_drone_id << "]");
+    }
+  } 
+  else {
+    // 新的无人机 ID，存储其消息并记录时间戳
+    known_drone_ids.insert(received_drone_id);
+    known_drone_timestamps[received_drone_id] = received_time;
+    other_drone_detect_msgs[received_drone_id] = *other_drone_detect_msg;
+    ROS_INFO_STREAM(prename << ": Received new detection from drone[" << received_drone_id << "]");
+  }
+}
+
+void PubDroneDetectResult()
+{
+  apriltag_ros::DroneTagDetectionArray drone_detect_msg;
+  drone_detect_msg.header.stamp = ros::Time::now();
+  drone_detect_msg.drone_id = drone_id;
+
+  // 本机无人机检测结果
+  for (int i = 0; i < detected_VICTIM_tags_.size(); ++i) {
+    apriltag_ros::DroneTagDetection detect_msg;
+    detect_msg.target_id = detected_VICTIM_tags_[i].target_id;
+    detect_msg.position.x = detected_VICTIM_tags_[i].tag_position(0);
+    detect_msg.position.y = detected_VICTIM_tags_[i].tag_position(1);
+    detect_msg.position.z = detected_VICTIM_tags_[i].tag_position(2);
+    if (i == land_p_target_id)
+    {
+      detect_msg.is_claimed = true;
+    }
+    else
+    {
+      detect_msg.is_claimed = false;
+    }
+    drone_detect_msg.detections.push_back(detect_msg);
+  }
+
+  drone_detect_pub.publish(drone_detect_msg);
+}
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "tag_result_pub");
@@ -1105,6 +1180,7 @@ int main(int argc, char **argv)
   ROS_WARN_STREAM(node_name << ": DANGER_num: " << DANGER_num);
   ROS_WARN_STREAM(node_name << ": POSITION_THRESHOLD: " << POSITION_THRESHOLD);
   
+  other_drone_detect_sub = nh.subscribe<apriltag_ros::DroneTagDetectionArray>("/drone_detect", 1, OtherDroneDetectCallback);
   uav_state_sub = nh.subscribe<mavros_msgs::State>(topic_uav_state, 10, UavStateCallback);
   wp_finished_sub = nh.subscribe<std_msgs::Empty>(topic_wp_finished, 10, WpFinishedCallback);
   px4_set_mode_client = nh.serviceClient<mavros_msgs::SetMode>(topic_uav_mode);
@@ -1126,6 +1202,8 @@ int main(int argc, char **argv)
 
   std::string uav_land_pose_topic = "/Apriltag/land_goal_" + std::to_string(drone_id);
 
+  // drone detect result publisher
+  drone_detect_pub = nh.advertise<apriltag_ros::DroneTagDetectionArray>("/drone_detect", 1);
   vis_tag_pub = nh.advertise<visualization_msgs::MarkerArray>("tag_result/vis", 1);
   uav_land_pose_pub = nh.advertise<geometry_msgs::PoseStamped>(uav_land_pose_topic, 1);
   uav_pose_pub = nh.advertise<geometry_msgs::PoseStamped>("uav_pose", 1);
