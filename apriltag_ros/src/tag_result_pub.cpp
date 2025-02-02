@@ -1128,7 +1128,7 @@ void PX4_TAG_LAND()
           other_detected_VICTIM_tag_.clear();
           return;
         }
-        ROS_ERROR_STREAM(prename << ": odom_p : " << odom_p.transpose());
+        // ROS_ERROR_STREAM(prename << ": odom_p : " << odom_p.transpose());
         Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tag_[closest_tag];
         land_p_target_id = closest_tag;
         init_land_p = closest_tag_position;
@@ -1273,11 +1273,6 @@ void PX4_TAG_LAND()
 void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_msg, const nav_msgs::OdometryConstPtr& odom_msg)
 {
   detect_msgs = *tag_msg;
-  if (detect_msgs.detections.size() == 0)
-  {
-    // ROS_WARN_STREAM(node_name << ": No Tag detected !");
-    return;
-  }
   if (odom_msg->pose.pose.position.x == 0 && odom_msg->pose.pose.position.y == 0 && odom_msg->pose.pose.position.z == 0)
   {
     ROS_WARN_STREAM(node_name << ": No Odom detected !");
@@ -1289,6 +1284,7 @@ void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_m
   uav_pose.header.frame_id = "world";
 
   odom_p << odom_msg->pose.pose.position.x, odom_msg->pose.pose.position.y, odom_msg->pose.pose.position.z;
+  // ROS_INFO_STREAM(prename << ": odom_p : " << odom_p.transpose());
   odom_v << odom_msg->twist.twist.linear.x, odom_msg->twist.twist.linear.y, odom_msg->twist.twist.linear.z; 
   odom_q = Eigen::Quaterniond(odom_msg->pose.pose.orientation.w, odom_msg->pose.pose.orientation.x, 
                                 odom_msg->pose.pose.orientation.y, odom_msg->pose.pose.orientation.z);
@@ -1304,6 +1300,12 @@ void Tag_Odom_callback(const apriltag_ros::AprilTagDetectionArrayConstPtr& tag_m
   local2Cam = local2body * body2Cam;
 
   local2Cam_rotate = local2Cam.block<3, 3>(0, 0);
+  
+  if (detect_msgs.detections.size() == 0)
+  {
+    // ROS_WARN_STREAM(node_name << ": No Tag detected !");
+    return;
+  }
 
   transform_tag_position();
 }
