@@ -4,6 +4,7 @@
   <arg name="queue_size" default="1" />
   <arg name="uav_name" default="iris"/>
   <arg name="use_prename" default="true" />
+  <arg name="drone_num" default="5" />
   
   <!-- UAV_0 -->
   <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_0" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
@@ -21,6 +22,7 @@
   <node pkg="apriltag_ros" type="tag_result_pub" name="tag_result_pub_0" output="screen" >
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="drone_id" value="0" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
@@ -46,6 +48,7 @@
   <node pkg="apriltag_ros" type="tag_result_pub" name="tag_result_pub_1" output="screen" >
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="drone_id" value="1" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
@@ -72,6 +75,7 @@
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
       <param name="drone_id" value="2" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
       <param name="DANGER_num" value="4" />
@@ -97,6 +101,7 @@
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
       <param name="drone_id" value="3" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
       <param name="DANGER_num" value="4" />
@@ -122,6 +127,7 @@
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
       <param name="drone_id" value="4" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="POSITION_THRESHOLD" value="1.5" />
       <param name="VICTIM_num" value="8" />
       <param name="DANGER_num" value="4" />
