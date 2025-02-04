@@ -114,6 +114,8 @@ int next_VICTIM_id = 1;  // VICTIM ID计数器
 int next_DANGER_id = 1;  // DANGER ID计数器
 bool init_VICTIM_tags_ = false;
 bool init_DANGER_tags_ = false;
+int VICTIM_tags_num = 0;
+int wait_time = 0;
 
 std::vector<double> colorR = {150, 0, 0, 255, 255, 0, 243, 143, 112, 255, 241};
 std::vector<double> colorG = {150, 229, 0, 0, 44, 212, 110, 255, 0, 165, 84};
@@ -1206,9 +1208,10 @@ void PX4_TAG_LAND()
         PubDroneDetectResult();
         init_land_flag = true;
         land_way_mode = 0;
+        VICTIM_tags_num = detected_VICTIM_tags_.size();
       }
       else
-      {
+      { 
         //0.0 Delete the same VICTIM tag in the other_detected_VICTIM_tag_
         DeleteSameOtherDroneDetectResult();
 
@@ -1230,6 +1233,25 @@ void PX4_TAG_LAND()
           other_detected_VICTIM_tag_.clear();
           return;
         }
+
+        Eigen::Vector3d diff = other_detected_VICTIM_tag_[closest_tag] - odom_p;
+        double dx = diff.x();
+        double dy = diff.y();
+        double horizontal_dist = sqrt(dx*dx + dy*dy);
+
+        // wait for drone_id * 10 times
+        if(wait_time < horizontal_dist)
+        {
+          wait_time ++;
+          return;
+        }
+
+        // if(wait_time < 10*(drone_id + 1))
+        // {
+        //   wait_time ++;
+        //   return;
+        // }
+
         // ROS_ERROR_STREAM(prename << ": odom_p : " << odom_p.transpose());
         Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tag_[closest_tag];
         land_p_target_id = closest_tag;
@@ -1246,6 +1268,7 @@ void PX4_TAG_LAND()
         PubDroneDetectResult();
         init_land_flag = true;
         land_way_mode = 1;
+        VICTIM_tags_num = detected_VICTIM_tags_.size();
       }
     }
     
@@ -1266,8 +1289,8 @@ void PX4_TAG_LAND()
         else if (land_way_mode == 1)
         {
           final_land_p = other_detected_VICTIM_tag_[land_p_target_id];
-          CheckSameLandSecond();
-          PubDroneDetectResultSecond();
+          // CheckSameLandSecond();
+          // PubDroneDetectResultSecond();
         }
         final_land_flag = true;
         ROS_WARN_STREAM(prename << ": From init land to Final land !");
@@ -1282,6 +1305,21 @@ void PX4_TAG_LAND()
       }
       else
       {
+        // 如果本机识别数量发生了变化，再次发布检测结果
+        if (VICTIM_tags_num != detected_VICTIM_tags_.size() && land_way_mode == 1)
+        {
+          CheckSameLandSecond();
+          PubDroneDetectResultSecond();
+          VICTIM_tags_num = detected_VICTIM_tags_.size();
+        }
+        else if (VICTIM_tags_num != detected_VICTIM_tags_.size() && land_way_mode == 0)
+        {
+          PubDroneDetectResult();
+          VICTIM_tags_num = detected_VICTIM_tags_.size();
+        }
+        
+        // CheckSameLandSecond();
+        // PubDroneDetectResultSecond();
         // geometry_msgs::PoseStamped uav_land_pose;
         // uav_land_pose.header.stamp = ros::Time::now();
         // uav_land_pose.header.frame_id = "world";
