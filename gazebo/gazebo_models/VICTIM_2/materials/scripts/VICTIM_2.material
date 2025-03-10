@@ -1,0 +1,16 @@
+material VICTIM_2
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture VICTIM_2.png
+				filtering anistropic
+				max_anisotropy 16
+				scale 1.0 1.0
+			}
+		}
+	}
+}

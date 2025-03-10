@@ -1,0 +1,16 @@
+material Danger_10
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Danger_10.png
+				filtering anistropic
+				max_anisotropy 16
+				scale 1.0 1.0
+			}
+		}
+	}
+}
