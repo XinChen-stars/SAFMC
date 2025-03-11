@@ -145,8 +145,11 @@ target_link_libraries(imgtoqgc ${catkin_LIBRARIES})
 add_executable(tag_result_pub src/tag_result_pub.cpp)
 target_link_libraries(tag_result_pub ${catkin_LIBRARIES} kalmanFilter)
 
-add_executable(tag_result_pub_original src/tag_result_pub_original.cpp)
-target_link_libraries(tag_result_pub_original ${catkin_LIBRARIES} kalmanFilter)
+add_executable(tag_result_safmc src/tag_result_safmc.cpp)
+target_link_libraries(tag_result_safmc ${catkin_LIBRARIES} kalmanFilter)
+
+# add_executable(tag_result_pub_original src/tag_result_pub_original.cpp)
+# target_link_libraries(tag_result_pub_original ${catkin_LIBRARIES} kalmanFilter)
 #############
 ## Install ##
 #############
