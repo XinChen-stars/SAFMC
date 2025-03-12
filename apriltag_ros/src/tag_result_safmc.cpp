@@ -62,12 +62,17 @@ int VICTIM_num;
 int DANGER_num;
 bool received_odom = false;
 
+/* transformation from camera to world */
 Eigen::Matrix4d body2Cam; // from body frame to camera frame
 Eigen::Matrix4d local2Cam; // from local frame to camera frame
 Eigen::Matrix3d local2Cam_rotate;
 double offset_x, offset_y, offset_z;
 
+/* drone odom */
 Eigen::Vector3d odom_p, odom_v;
+Eigen::Quaterniond odom_q;
+
+/* PX4 land */
 Eigen::Vector3d init_land_p, final_land_p;
 int land_p_target_id;
 int other_already_land_id;
@@ -77,43 +82,40 @@ std::unordered_set<int> other_already_land_ids_set_second;
 bool is_other_drone_land = false;
 bool is_other_drone_land_second = false;
 int land_way_mode;//0:own land 1:other land
-Eigen::Quaterniond odom_q;
 
-apriltag_ros::AprilTagDetection detect_msg;
-apriltag_ros::AprilTagDetectionArray detect_msgs;
+/* Other drone Detection Callback function */
 apriltag_ros::DroneTagDetection other_detect_msg;
 apriltag_ros::DroneTagDetectionArray other_detect_msgs;
 std::unordered_set<int32_t> known_drone_ids;
 std::unordered_map<int32_t, ros::Time> known_drone_timestamps;
 std::unordered_map<int32_t, apriltag_ros::DroneTagDetectionArray> other_drone_detect_msgs;
 std::map<int32_t, ros::Subscriber> drone_subscribers;
-geometry_msgs::PoseStamped tag0_pose;
-geometry_msgs::PoseStamped tag1_pose;
-geometry_msgs::PoseStamped tag2_pose;
 
 struct Tag_Sptial_Temporal
 {
   Eigen::Vector3d tag_position;
   Eigen::Vector3d sum_position;
   kalman_filter kf;
-  Eigen::Vector3d init_tag_position;//初始位置
-  Eigen::Vector3d observation_tag_position;//观测到的位置
-  Eigen::Vector3d estimated_tag_position;//估计位置
+  Eigen::Vector3d init_tag_position;//init_tag_position
+  Eigen::Vector3d observation_tag_position;//observation_tag_position
+  Eigen::Vector3d estimated_tag_position;//estimated_tag_position
   int record_num;
   int tag_id;
   int target_id;
 };
 
-/* Apriltag  Detection Callback function */
+/* Apriltag Detection Callback function */
+apriltag_ros::AprilTagDetection detect_msg;
+apriltag_ros::AprilTagDetectionArray detect_msgs;
 std::vector<Tag_Sptial_Temporal> detected_VICTIM_tags_;// id: 0 ~ 7 VICTIM
+std::vector<Tag_Sptial_Temporal> other_detected_VICTIM_tags_;// id: 0 ~ 7 VICTIM
 std::vector<Tag_Sptial_Temporal> detected_DANGER_tags_;// id: 8 ~ 11 DANGER
-std::vector<Eigen::Vector3d> other_detected_VICTIM_tag_;
-std::vector<Eigen::Vector3d> other_already_land_pose_;
-bool is_the_same_land = false;
 std::vector<bool> VICTIM_init_flag;
 std::vector<bool> DANGER_init_flag;
+std::vector<bool> VICTIM_land_flag;
 int VICTIM_tags_num = 0;
 int wait_time = 0;
+int wait_land_time = 0;
 
 std::vector<double> colorR = {150, 0, 0, 255, 255, 0, 243, 143, 112, 255, 241};
 std::vector<double> colorG = {150, 229, 0, 0, 44, 212, 110, 255, 0, 165, 84};
@@ -123,70 +125,35 @@ std::vector<std_msgs::ColorRGBA> COLOR_LISTS;
 mavros_msgs::State uav_state;//无人机状态
 mavros_msgs::State last_uav_state;//上一时刻无人机状态
 
-void DeleteSameOtherDroneDetectResult()
-{
-  if (other_detected_VICTIM_tag_.size() < 2)
-  {
-    return;
-  }
-  
- for (size_t i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
-    for (size_t j = i + 1; j < other_detected_VICTIM_tag_.size(); ) {
-      Eigen::Vector3d diff = other_detected_VICTIM_tag_[i] - other_detected_VICTIM_tag_[j];
-      double dx = diff.x();
-      double dy = diff.y();
-      double horizontal_dist = sqrt(dx*dx + dy*dy);
-      if (horizontal_dist < 0.5) 
-      {
-        other_detected_VICTIM_tag_.erase(other_detected_VICTIM_tag_.begin() + j);
-      } 
-      else {
-        ++j;
-      }
-    }
-  }
-}
 
+// Check if the detected VICTIM is the same as the other drone
 bool CheckSameLand(const int type)
 {
   other_already_land_ids_set.clear();
-  if (other_already_land_pose_.empty())
+
+  if (type == 0)
   {
-    return false;
-  }
-  for (int i = 0; i < other_already_land_pose_.size(); i++)
-  {
-    if (type == 0)
+    for (int i = 0; i < detected_VICTIM_tags_.size(); i++)
     {
-      for (int j = 0; j < detected_VICTIM_tags_.size(); j++)
+      if (!VICTIM_land_flag[detected_VICTIM_tags_[i].tag_id])
       {
-        Eigen::Vector3d diff = other_already_land_pose_[i] - detected_VICTIM_tags_[j].tag_position;
-        double dx = diff.x();
-        double dy = diff.y();
-        double horizontal_dist = sqrt(dx*dx + dy*dy);
-        if (horizontal_dist < 0.5)
-        {
-          other_already_land_ids_set.insert(j);
-          ROS_ERROR_STREAM(prename << " Type " << type << " Same land with other drone " << j);
-        }
-      }
-    }
-    else
-    {
-      for (int j = 0; j < other_detected_VICTIM_tag_.size(); j++)
-      {
-        Eigen::Vector3d diff = other_already_land_pose_[i] - other_detected_VICTIM_tag_[j];
-        double dx = diff.x();
-        double dy = diff.y();
-        double horizontal_dist = sqrt(dx*dx + dy*dy);
-        if (horizontal_dist < 0.5)
-        {
-          other_already_land_ids_set.insert(j);
-          ROS_ERROR_STREAM(prename << " Type " << type <<" Same land with other drone " << j);
-        }
+        other_already_land_ids_set.insert(i);
+        ROS_ERROR_STREAM(prename << " Type " << type << " Same land with other drone " << i);
       }
     }
   }
+  else
+  {
+    for (int j = 0; j < other_detected_VICTIM_tags_.size(); j++)
+    {
+      if (!VICTIM_land_flag[other_detected_VICTIM_tags_[j].tag_id])
+      {
+        other_already_land_ids_set.insert(j);
+        ROS_ERROR_STREAM(prename << " Type " << type <<" Same land with other drone " << j);
+      }
+    }
+  }
+
   if (!other_already_land_ids_set.empty())
   {
     is_other_drone_land = true;
@@ -198,24 +165,13 @@ bool CheckSameLand(const int type)
 void CheckSameLandSecond()
 {
   other_already_land_ids_set_second.clear();
-  if (other_already_land_pose_.empty())
+  
+  for (int j = 0; j < detected_VICTIM_tags_.size(); j++)
   {
-    return;
-  }
-  for (int i = 0; i < other_already_land_pose_.size(); i++)
-  {
-    
-    for (int j = 0; j < detected_VICTIM_tags_.size(); j++)
+    if (!VICTIM_land_flag[detected_VICTIM_tags_[j].tag_id])
     {
-      Eigen::Vector3d diff = other_already_land_pose_[i] - detected_VICTIM_tags_[j].tag_position;
-      double dx = diff.x();
-      double dy = diff.y();
-      double horizontal_dist = sqrt(dx*dx + dy*dy);
-      if (horizontal_dist < 0.5)
-      {
-        other_already_land_ids_set_second.insert(j);
-        ROS_ERROR_STREAM(prename << " Second Check "  << " Same land with other drone " << j);
-      }
+      other_already_land_ids_set_second.insert(j);
+      ROS_ERROR_STREAM(prename << " Second Check "  << " Same land with other drone " << j);
     }
   }
   if (!other_already_land_ids_set_second.empty())
@@ -226,10 +182,12 @@ void CheckSameLandSecond()
   return;
 }
 
+// Get the detected VICTIM from other drone
 void GetOtherDroneDetectResult()
 {
-  other_detected_VICTIM_tag_.clear();
-  other_already_land_pose_.clear();
+  other_detected_VICTIM_tags_.clear();
+
+  std::unordered_map<int32_t, std::pair<Eigen::Vector3d, int>> temp_accumulate_map;
 
   for (auto& drone_id : known_drone_ids)
   {
@@ -239,30 +197,53 @@ void GetOtherDroneDetectResult()
       other_detect_msg = other_detect_msgs.detections[i];
       if (other_detect_msg.is_claimed)
       {
+        int32_t victim_id = other_detect_msg.target_id;
         Eigen::Vector3d already_land_pose;
         already_land_pose << other_detect_msg.position.x, other_detect_msg.position.y, other_detect_msg.position.z;
-        ROS_WARN_STREAM(prename << " Other drone already land pose: " << already_land_pose.transpose() << " from drone_id: " << drone_id);
-        other_already_land_pose_.push_back(already_land_pose);
+        ROS_WARN_STREAM("VICTIM id: " << victim_id << "drone id: "<< prename << " Other drone already land pose: " << already_land_pose.transpose() << " from drone_id: " << drone_id);
+        // change the land flag
+        VICTIM_land_flag[int(victim_id)] = false;
       }
       else
       {
+        int32_t victim_id = other_detect_msg.target_id;
         Eigen::Vector3d other_VICTIM_pose;
         other_VICTIM_pose << other_detect_msg.position.x, other_detect_msg.position.y, other_detect_msg.position.z;
-        Eigen::Vector3d diff = other_VICTIM_pose - odom_p;
-        double dx = diff.x();
-        double dy = diff.y();
-        double horizontal_dist = sqrt(dx*dx + dy*dy);
-        if (horizontal_dist > 10.0)
-        {
-          ROS_ERROR_STREAM(prename << " Other drone detect VICTIM pose: " << other_VICTIM_pose.transpose() << " from drone_id: " << drone_id << " is not a good land pose horizontal_dist: " << horizontal_dist);
-          continue;
+        // Eigen::Vector3d diff = other_VICTIM_pose - odom_p;
+        // double dx = diff.x();
+        // double dy = diff.y();
+        // double horizontal_dist = sqrt(dx*dx + dy*dy);
+        // if (horizontal_dist > 10.0)
+        // {
+        //   ROS_ERROR_STREAM(prename << " Other drone detect VICTIM pose: " << other_VICTIM_pose.transpose() << " from drone_id: " << drone_id << " is not a good land pose horizontal_dist: " << horizontal_dist);
+        //   continue;
+        // }
+
+        // 累积相同victim_id的位置
+        if(temp_accumulate_map.find(victim_id) == temp_accumulate_map.end()) {
+          temp_accumulate_map[victim_id] = std::make_pair(other_VICTIM_pose, 1);
+        } else {
+          temp_accumulate_map[victim_id].first += other_VICTIM_pose;
+          temp_accumulate_map[victim_id].second++;
         }
-        other_detected_VICTIM_tag_.push_back(other_VICTIM_pose);
       }
     }
   }
+
+  for(const auto& item : temp_accumulate_map) {
+    Eigen::Vector3d avg_pose = item.second.first / item.second.second;
+    Tag_Sptial_Temporal temp_tag;
+    temp_tag.tag_position = avg_pose;
+    temp_tag.tag_id = item.first;
+    other_detected_VICTIM_tags_.push_back(temp_tag);
+    
+    ROS_INFO_STREAM(prename << " Average position for VICTIM_id " << item.first 
+                   << " from " << item.second.second << " drone's detections: " 
+                   << avg_pose.transpose());
+  }
 }
 
+// publish the detected VICTIM result
 void PubDroneDetectResult()
 {
   apriltag_ros::DroneTagDetectionArray drone_detect_msg;
@@ -280,7 +261,7 @@ void PubDroneDetectResult()
       }
       
       apriltag_ros::DroneTagDetection own_detect_msg;
-      own_detect_msg.target_id = detected_VICTIM_tags_[i].target_id;
+      own_detect_msg.target_id = detected_VICTIM_tags_[i].tag_id;
       own_detect_msg.position.x = detected_VICTIM_tags_[i].tag_position(0);
       own_detect_msg.position.y = detected_VICTIM_tags_[i].tag_position(1);
       own_detect_msg.position.z = detected_VICTIM_tags_[i].tag_position(2);
@@ -298,17 +279,17 @@ void PubDroneDetectResult()
   else
   {
     // 发布其他无人机检测结果（本机筛选降落点后的）
-    for (int i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
+    for (int i = 0; i < other_detected_VICTIM_tags_.size(); ++i) {
       if (other_already_land_ids_set.count(i) && is_other_drone_land)
       {
         // 跳过已经降落过无人机的victim
         continue;
       }
       apriltag_ros::DroneTagDetection own_detect_msg;
-      own_detect_msg.target_id = i;
-      own_detect_msg.position.x = other_detected_VICTIM_tag_[i](0);
-      own_detect_msg.position.y = other_detected_VICTIM_tag_[i](1);
-      own_detect_msg.position.z = other_detected_VICTIM_tag_[i](2);
+      own_detect_msg.target_id = other_detected_VICTIM_tags_[i].tag_id;
+      own_detect_msg.position.x = other_detected_VICTIM_tags_[i].tag_position(0);
+      own_detect_msg.position.y = other_detected_VICTIM_tags_[i].tag_position(1);
+      own_detect_msg.position.z = other_detected_VICTIM_tags_[i].tag_position(2);
       if (i == land_p_target_id)
       {
         own_detect_msg.is_claimed = true;
@@ -325,6 +306,7 @@ void PubDroneDetectResult()
   ROS_ERROR_STREAM(prename << "---------  Publish drone detect result" << "size: " << drone_detect_msg.detections.size());
 }
 
+// publish the detected VICTIM result for the second time
 void PubDroneDetectResultSecond()
 {
   apriltag_ros::DroneTagDetectionArray drone_detect_msg;
@@ -340,14 +322,14 @@ void PubDroneDetectResultSecond()
         // 跳过已经降落过无人机的victim
         continue;
       }
-      if ((other_detected_VICTIM_tag_[land_p_target_id] - detected_VICTIM_tags_[i].tag_position).head(2).norm() < 0.5)
+      if ((other_detected_VICTIM_tags_[land_p_target_id].tag_position - detected_VICTIM_tags_[i].tag_position).head(2).norm() < 0.5)
       {
         // 跳过本机降落过无人机的victim
         continue;
       }
       
       apriltag_ros::DroneTagDetection own_detect_msg;
-      own_detect_msg.target_id = detected_VICTIM_tags_[i].target_id;
+      own_detect_msg.target_id = detected_VICTIM_tags_[i].tag_id;
       own_detect_msg.position.x = detected_VICTIM_tags_[i].tag_position(0);
       own_detect_msg.position.y = detected_VICTIM_tags_[i].tag_position(1);
       own_detect_msg.position.z = detected_VICTIM_tags_[i].tag_position(2);
@@ -357,17 +339,17 @@ void PubDroneDetectResultSecond()
   }
   
   // 发布其他无人机检测结果（本机筛选降落点后的）
-  for (int i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
+  for (int i = 0; i < other_detected_VICTIM_tags_.size(); ++i) {
     if (other_already_land_ids_set.count(i) && is_other_drone_land)
     {
       // 跳过已经降落过无人机的victim
       continue;
     }
     apriltag_ros::DroneTagDetection own_detect_msg;
-    own_detect_msg.target_id = i;
-    own_detect_msg.position.x = other_detected_VICTIM_tag_[i](0);
-    own_detect_msg.position.y = other_detected_VICTIM_tag_[i](1);
-    own_detect_msg.position.z = other_detected_VICTIM_tag_[i](2);
+    own_detect_msg.target_id = other_detected_VICTIM_tags_[i].tag_id;
+    own_detect_msg.position.x = other_detected_VICTIM_tags_[i].tag_position(0);
+    own_detect_msg.position.y = other_detected_VICTIM_tags_[i].tag_position(1);
+    own_detect_msg.position.z = other_detected_VICTIM_tags_[i].tag_position(2);
     if (i == land_p_target_id)
     {
       own_detect_msg.is_claimed = true;
@@ -454,19 +436,19 @@ int findClosestVICTIM(const Eigen::Vector3d& pos , const int type, bool same_lan
   }
   else if (type == 1)
   {
-    for (int i = 0; i < other_detected_VICTIM_tag_.size(); ++i) {
+    for (int i = 0; i < other_detected_VICTIM_tags_.size(); ++i) {
       if (same_land && other_already_land_ids_set.count(i))
       {
         continue;
       }
-      Eigen::Vector3d diff = other_detected_VICTIM_tag_[i] - pos;
+      Eigen::Vector3d diff = other_detected_VICTIM_tags_[i].tag_position - pos;
       double dx = diff.x();
       double dy = diff.y();
       double horizontal_dist = sqrt(dx*dx + dy*dy);
       // only horizontal distance
-      // double horizontal_dist = (other_detected_VICTIM_tag_[i] - pos).head(2).norm();
+      // double horizontal_dist = (other_detected_VICTIM_tags_[i] - pos).head(2).norm();
       ROS_INFO_STREAM(prename << " VICTIM ID: " << i 
-      << "\n tag_pos: " << other_detected_VICTIM_tag_[i].transpose()
+      << "\n tag_pos: " << other_detected_VICTIM_tags_[i].tag_position.transpose()
       << "\n current_pos: " << pos.transpose()
       << "\n dx: " << dx << " dy: " << dy
       << "\n horizontal_dist: " << horizontal_dist);
@@ -1100,18 +1082,24 @@ void PX4_TAG_LAND()
 {
   if (finished_wp_flag && !init_land_flag)
   {
-    // 获取其他无人机的检测结果
+    // get other drone detect result
     GetOtherDroneDetectResult();
 
     // Check detceted VICTIM tags is empty
-    if (detected_VICTIM_tags_.empty() && other_detected_VICTIM_tag_.empty())
+    if (detected_VICTIM_tags_.empty() && other_detected_VICTIM_tags_.empty())
     {
-      // ROS_INFO_STREAM(prename << ": No VICTIM tag detected !");
-      // 直接降落，注意别在Danger区域降落就行
+      wait_land_time ++;
+      if (wait_land_time > 6000) // 6000 * 0.01s = 60s
+      {
+        // ROS_INFO_STREAM(prename << ": No VICTIM tag detected !");
+        // land the drone directly, make sure not land in the danger zone
+        return;
+      }
       return;
     }
     else
     {
+      // own drone detected VICTIM tags
       if (!detected_VICTIM_tags_.empty() && land_way_mode == 0)
       {
         //0. Check if have the same VICTIM tag in the already land VICTIM tags
@@ -1155,16 +1143,13 @@ void PX4_TAG_LAND()
       }
       else
       { 
-        //0.0 Delete the same VICTIM tag in the other_detected_VICTIM_tag_
-        DeleteSameOtherDroneDetectResult();
-
         //0.1 Check if have the same VICTIM tag in the already land VICTIM tags
         bool same_land_flag = CheckSameLand(1);
-        if (same_land_flag && other_detected_VICTIM_tag_.size() == 1)
+        if (same_land_flag && other_detected_VICTIM_tags_.size() == 1)
         {
           // ROS_ERROR_STREAM(prename << ": Already land the same VICTIM tag , Waitting for other land place !");
           // 清空其他飞机检测到的VICTIM标签
-          other_detected_VICTIM_tag_.clear();
+          other_detected_VICTIM_tags_.clear();
           return;
         }
         //1. find the closest VICTIM tag
@@ -1173,11 +1158,11 @@ void PX4_TAG_LAND()
         {
           // ROS_ERROR_STREAM(prename << ": Already land the same VICTIM tag , Waitting for other land place !");
           // 清空其他飞机检测到的VICTIM标签
-          other_detected_VICTIM_tag_.clear();
+          other_detected_VICTIM_tags_.clear();
           return;
         }
 
-        Eigen::Vector3d diff = other_detected_VICTIM_tag_[closest_tag] - odom_p;
+        Eigen::Vector3d diff = other_detected_VICTIM_tags_[closest_tag].tag_position - odom_p;
         double dx = diff.x();
         double dy = diff.y();
         double horizontal_dist = sqrt(dx*dx + dy*dy);
@@ -1196,7 +1181,7 @@ void PX4_TAG_LAND()
         // }
 
         // ROS_ERROR_STREAM(prename << ": odom_p : " << odom_p.transpose());
-        Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tag_[closest_tag];
+        Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tags_[closest_tag].tag_position;
         land_p_target_id = closest_tag;
         init_land_p = closest_tag_position;
 
@@ -1231,9 +1216,7 @@ void PX4_TAG_LAND()
         }
         else if (land_way_mode == 1)
         {
-          final_land_p = other_detected_VICTIM_tag_[land_p_target_id];
-          // CheckSameLandSecond();
-          // PubDroneDetectResultSecond();
+          final_land_p = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
         }
         final_land_flag = true;
         ROS_WARN_STREAM(prename << ": From init land to Final land !");
@@ -1304,7 +1287,7 @@ void PX4_TAG_LAND()
             }
             else if (land_way_mode == 1)
             {
-              closest_victim_position = other_detected_VICTIM_tag_[land_p_target_id];
+              closest_victim_position = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
             }
             final_land_p = SelectNewLandPosition(closest_victim_position, closest_danger_position);
             geometry_msgs::PoseStamped uav_land_pose;
@@ -1410,6 +1393,7 @@ void OtherDroneDetectCallback(const apriltag_ros::DroneTagDetectionArrayConstPtr
   ros::Time received_time = other_drone_detect_msg->header.stamp;
 
   // 判断drone_id是否与接收到的消息的drone_id相同
+  // check drone_id 
   if (received_drone_id != source_drone_id)
   {
     ROS_ERROR_STREAM(prename << ": Received message from drone[" << source_drone_id << "] with mismatched drone_id " << received_drone_id);
@@ -1483,8 +1467,14 @@ int main(int argc, char **argv)
   {
     DANGER_init_flag[i] = false;
   }
+  VICTIM_land_flag.resize(VICTIM_num);
+  for (int i = 0; i < VICTIM_num; i++)
+  {
+    VICTIM_land_flag[i] = true;
+  }
 
   detected_VICTIM_tags_.reserve(VICTIM_num);
+  other_detected_VICTIM_tags_.reserve(VICTIM_num);
   detected_DANGER_tags_.reserve(DANGER_num);
 
 
