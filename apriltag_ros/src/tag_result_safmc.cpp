@@ -993,11 +993,11 @@ visualization_msgs::Marker VisCircleTag(const geometry_msgs::PoseStamped tag_pos
 void VisualizeTag()
 {
   // 发布无人机位置
-  // uav_pose.header.stamp = ros::Time::now();
-  // uav_pose_pub.publish(uav_pose);
+  uav_pose.header.stamp = ros::Time::now();
+  uav_pose_pub.publish(uav_pose);
   // 发布facker无人机
-  // LoadVisModels();
-  // uav_model_pub.publish(vis_uav_model);
+  LoadVisModels();
+  uav_model_pub.publish(vis_uav_model);
 
   visualization_msgs::MarkerArray tag_markers;
 
@@ -1590,7 +1590,7 @@ int main(int argc, char **argv)
   {
     // ROS_WARN_STREAM(prename << "VICTIM_num: " << detected_VICTIM_tags_.size() << " DANGER_num: " << detected_DANGER_tags_.size());
     VisualizeTag();
-    // PX4_TAG_LAND();
+    PX4_TAG_LAND();
     ros::spinOnce();
     loop_rate.sleep();
   }
