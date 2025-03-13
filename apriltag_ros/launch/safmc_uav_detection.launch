@@ -7,7 +7,8 @@
   <arg name="queue_size" default="1" />
   <arg name="use_prename" default="true" />
   <arg name="uav_name" default="iris"/>
-  <arg name="drone_id" default="0"/>
+  <arg name="drone_num" default="5" />
+
   <arg name="stateEstimationTopic" default="/iris_0/mavros/local_position/odom"/>
 
   <!-- apriltag_ros continuous detection node -->
@@ -28,7 +29,8 @@
   <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc" output="screen" >
       <param name="use_prename" value="$(arg use_prename)" />
       <param name="uav_name" value="$(arg uav_name)" />
-      <param name="drone_id" value="$(arg drone_id)" />
+      <param name="drone_id" value="0" />
+      <param name="drone_num" value="$(arg drone_num)" />
       <param name="VICTIM_num" value="8" />
       <param name="DANGER_num" value="4" />
       <param name="offset_x" value="0.0" />
