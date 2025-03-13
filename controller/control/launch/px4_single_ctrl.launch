@@ -4,6 +4,7 @@
   <arg name="takeoff_height" default="1.0" />
 
   <node pkg="px4_basic_ctrl" type="px4_basic_ctrl" name="px4_basic_ctrl_0" output="screen">
+    <remap from="/planning/pos_cmd" to="/planning/pos_cmd_0"/>
     <param name="uav_name" value="$(arg uav_name)" />
     <param name="uav_id" value="$(arg uav_id)" />
     <param name="takeoff_height" value="$(arg takeoff_height)" />

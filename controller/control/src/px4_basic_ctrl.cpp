@@ -104,6 +104,7 @@ void rviz_target_cb(const geometry_msgs::PoseStamped::ConstPtr& msg)//读取rviz
 // pos command callback
 void pos_cmd_cb(const quadrotor_msgs::PositionCommand::ConstPtr& msg)//ego的回调函数
 {
+	ROS_INFO_STREAM("Receive the cmd target!");
     cmd_receive = true;
 	cmd = *msg;
     cmd_pos_x = cmd.position.x;

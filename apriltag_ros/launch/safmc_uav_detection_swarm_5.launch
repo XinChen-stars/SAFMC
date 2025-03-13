@@ -1,0 +1,139 @@
+<launch>
+  <arg name="launch_prefix" default="" />
+  <arg name="image_topic" default="image_raw" />
+  <arg name="queue_size" default="1" />
+  <arg name="uav_name" default="iris"/>
+  <arg name="use_prename" default="true" />
+  <arg name="drone_num" default="5" />
+  
+  <!-- UAV_0 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_0" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="image_rect" to="/iris_0/camera/$(arg image_topic)" />
+    <remap from="camera_info" to="/iris_0/camera/camera_info" />
+    <remap from="tag_detections" to="/iris_0/tag_detections" />
+
+    <param name="publish_tag_detections_image" type="bool" value="false" />
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc_0" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_num" value="$(arg drone_num)" />
+      <param name="drone_id" value="0" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+
+  <!-- UAV_1 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_1" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="image_rect" to="/iris_1/camera/$(arg image_topic)" />
+    <remap from="camera_info" to="/iris_1/camera/camera_info" />
+    <remap from="tag_detections" to="/iris_1/tag_detections" />
+
+    <param name="publish_tag_detections_image" type="bool" value="false" />
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc_1" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_num" value="$(arg drone_num)" />
+      <param name="drone_id" value="1" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+
+  <!-- UAV_2 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_2" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="image_rect" to="/iris_2/camera/$(arg image_topic)" />
+    <remap from="camera_info" to="/iris_2/camera/camera_info" />
+    <remap from="tag_detections" to="/iris_2/tag_detections" />
+
+    <param name="publish_tag_detections_image" type="bool" value="false" />
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc_2" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_id" value="2" />
+      <param name="drone_num" value="$(arg drone_num)" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+
+  <!-- UAV_3 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_3" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="image_rect" to="/iris_3/camera/$(arg image_topic)" />
+    <remap from="camera_info" to="/iris_3/camera/camera_info" />
+    <remap from="tag_detections" to="/iris_3/tag_detections" />
+
+    <param name="publish_tag_detections_image" type="bool" value="false" />
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc_3" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_id" value="3" />
+      <param name="drone_num" value="$(arg drone_num)" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+
+  <!-- UAV_4 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node_4" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="image_rect" to="/iris_4/camera/$(arg image_topic)" />
+    <remap from="camera_info" to="/iris_4/camera/camera_info" />
+    <remap from="tag_detections" to="/iris_4/tag_detections" />
+
+    <param name="publish_tag_detections_image" type="bool" value="false" />
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="tag_result_safmc" name="tag_result_safmc_4" output="screen" >
+      <param name="use_prename" value="$(arg use_prename)" />
+      <param name="uav_name" value="$(arg uav_name)" />
+      <param name="drone_id" value="4" />
+      <param name="drone_num" value="$(arg drone_num)" />
+      <param name="POSITION_THRESHOLD" value="1.5" />
+      <param name="VICTIM_num" value="8" />
+      <param name="DANGER_num" value="4" />
+      <param name="offset_x" value="0.0" />
+      <param name="offset_y" value="0.0" />
+      <param name="offset_z" value="0.0" />
+  </node>
+
+</launch>
