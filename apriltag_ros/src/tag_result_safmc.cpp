@@ -1216,7 +1216,16 @@ void PX4_TAG_LAND()
         }
         else if (land_way_mode == 1)
         {
-          final_land_p = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
+          // final_land_p = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
+          int land_victim_id = other_detected_VICTIM_tags_[land_p_target_id].tag_id;
+          for (int i = 0; i < detected_VICTIM_tags_.size(); i++)
+          {
+            if (detected_VICTIM_tags_[i].tag_id == land_victim_id)
+            {
+              final_land_p = detected_VICTIM_tags_[i].tag_position;
+              break;
+            }
+          }
         }
         final_land_flag = true;
         ROS_WARN_STREAM(prename << ": From init land to Final land !");
@@ -1287,7 +1296,16 @@ void PX4_TAG_LAND()
             }
             else if (land_way_mode == 1)
             {
-              closest_victim_position = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
+              // closest_victim_position = other_detected_VICTIM_tags_[land_p_target_id].tag_position;
+              int land_victim_id = other_detected_VICTIM_tags_[land_p_target_id].tag_id;
+              for (int i = 0; i < detected_VICTIM_tags_.size(); i++)
+              {
+                if (detected_VICTIM_tags_[i].tag_id == land_victim_id)
+                {
+                  closest_victim_position = detected_VICTIM_tags_[i].tag_position;
+                  break;
+                }
+              }
             }
             final_land_p = SelectNewLandPosition(closest_victim_position, closest_danger_position);
             geometry_msgs::PoseStamped uav_land_pose;
