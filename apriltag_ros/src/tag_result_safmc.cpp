@@ -138,7 +138,7 @@ bool CheckSameLand(const int type)
       if (!VICTIM_land_flag[detected_VICTIM_tags_[i].tag_id])
       {
         other_already_land_ids_set.insert(i);
-        ROS_ERROR_STREAM(prename << " Type " << type << " Same land with other drone " << i);
+        ROS_ERROR_STREAM(prename << " Type " << type << " Same land with other drone ");
       }
     }
   }
@@ -149,7 +149,7 @@ bool CheckSameLand(const int type)
       if (!VICTIM_land_flag[other_detected_VICTIM_tags_[j].tag_id])
       {
         other_already_land_ids_set.insert(j);
-        ROS_ERROR_STREAM(prename << " Type " << type <<" Same land with other drone " << j);
+        ROS_ERROR_STREAM(prename << " Type " << type <<" Same land with other drone ");
       }
     }
   }
@@ -200,7 +200,7 @@ void GetOtherDroneDetectResult()
         int32_t victim_id = other_detect_msg.target_id;
         Eigen::Vector3d already_land_pose;
         already_land_pose << other_detect_msg.position.x, other_detect_msg.position.y, other_detect_msg.position.z;
-        ROS_WARN_STREAM("VICTIM id: " << victim_id << "drone id: "<< prename << " Other drone already land pose: " << already_land_pose.transpose() << " from drone_id: " << drone_id);
+        ROS_WARN_STREAM("VICTIM id: " << victim_id << " drone id: "<< prename << " Other drone already land pose: " << already_land_pose.transpose() << " from drone_id: " << drone_id);
         // change the land flag
         VICTIM_land_flag[int(victim_id)] = false;
       }
@@ -209,15 +209,15 @@ void GetOtherDroneDetectResult()
         int32_t victim_id = other_detect_msg.target_id;
         Eigen::Vector3d other_VICTIM_pose;
         other_VICTIM_pose << other_detect_msg.position.x, other_detect_msg.position.y, other_detect_msg.position.z;
-        // Eigen::Vector3d diff = other_VICTIM_pose - odom_p;
-        // double dx = diff.x();
-        // double dy = diff.y();
-        // double horizontal_dist = sqrt(dx*dx + dy*dy);
-        // if (horizontal_dist > 10.0)
-        // {
-        //   ROS_ERROR_STREAM(prename << " Other drone detect VICTIM pose: " << other_VICTIM_pose.transpose() << " from drone_id: " << drone_id << " is not a good land pose horizontal_dist: " << horizontal_dist);
-        //   continue;
-        // }
+        Eigen::Vector3d diff = other_VICTIM_pose - odom_p;
+        double dx = diff.x();
+        double dy = diff.y();
+        double horizontal_dist = sqrt(dx*dx + dy*dy);
+        if (horizontal_dist > 10.0)
+        {
+          ROS_ERROR_STREAM(prename << " Other drone detect VICTIM pose: " << other_VICTIM_pose.transpose() << " from drone_id: " << drone_id << " is not a good land pose horizontal_dist: " << horizontal_dist);
+          continue;
+        }
 
         // 累积相同victim_id的位置
         if(temp_accumulate_map.find(victim_id) == temp_accumulate_map.end()) {
@@ -1168,17 +1168,17 @@ void PX4_TAG_LAND()
         double horizontal_dist = sqrt(dx*dx + dy*dy);
 
         // wait for drone_id * 10 times
-        if(wait_time < horizontal_dist)
-        {
-          wait_time ++;
-          return;
-        }
-
-        // if(wait_time < 10*(drone_id + 1))
+        // if(wait_time < horizontal_dist)
         // {
         //   wait_time ++;
         //   return;
         // }
+
+        if(wait_time < 10*(drone_id + 1) + horizontal_dist)
+        {
+          wait_time ++;
+          return;
+        }
 
         // ROS_ERROR_STREAM(prename << ": odom_p : " << odom_p.transpose());
         Eigen::Vector3d closest_tag_position = other_detected_VICTIM_tags_[closest_tag].tag_position;
