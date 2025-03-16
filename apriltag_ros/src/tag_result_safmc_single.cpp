@@ -366,6 +366,29 @@ void PubDroneDetectResultSecond()
   ROS_INFO_STREAM(prename << "--------- Publish drone detect result" << "size: " << drone_detect_msg.detections.size());
 }
 
+// select the new land position without the closest VICTIM
+Eigen::Vector3d SelectNewLandPosition2(const Eigen::Vector3d& Closest_Danger_position) {
+  Eigen::Vector3d new_land_position;
+  Eigen::Vector3d Danger_position = Closest_Danger_position;
+  Danger_position(2) = 0; // ignore the z axis
+
+  // calculate a new land position avoiding the closest DANGER within 1m range
+  Eigen::Vector3d direction = (odom_p - Danger_position).normalized();
+  direction(2) = 0; // ignore the z axis
+
+  new_land_position = Danger_position + direction * 1.5; // move 1.5m away from the danger zone
+  new_land_position(2) = 0; // ignore the z axis
+
+  // ensure the new land position is valid
+  if (!isValidPosition(new_land_position)) {
+    ROS_WARN("Invalid new land position calculated, using default position");
+    new_land_position = odom_p + Eigen::Vector3d(1.0, 1.0, 0.0); // default position if invalid
+  }
+
+  return new_land_position;
+}
+
+
 // select a new land position
 Eigen::Vector3d SelectNewLandPosition(const Eigen::Vector3d& Closest_VICTIM_position, const Eigen::Vector3d& Closest_Danger_position) {
   Eigen::Vector3d new_land_position;
@@ -1091,9 +1114,40 @@ void PX4_TAG_LAND()
       wait_land_time ++;
       if (wait_land_time > 6000) // 6000 * 0.01s = 60s
       {
-        // ROS_INFO_STREAM(prename << ": No VICTIM tag detected !");
-        // land the drone directly, make sure not land in the danger zone
-        return;
+        if (!detected_DANGER_tags_.empty())
+        {
+          int closest_danger = findClosestDANGER(odom_p);
+          Eigen::Vector3d closest_danger_position = detected_DANGER_tags_[closest_danger].tag_position;
+          double danger_distance = (odom_p - closest_danger_position).head(2).norm();
+          if (danger_distance > 1.0)
+          {
+            // 切换到Land模式
+            if (uav_state.mode != "AUTO.LAND"){
+                // ROS_INFO_STREAM(prename << ": NO in the Danger Zone , Start to land !");
+                SetPX4Mode("AUTO.LAND");
+            }
+          }
+          else
+          {
+            // select a new final_land_p avoid the danger zone
+            final_land_p = SelectNewLandPosition2(closest_danger_position);
+            geometry_msgs::PoseStamped uav_land_pose;
+            uav_land_pose.header.stamp = ros::Time::now();
+            uav_land_pose.header.frame_id = "world";
+            uav_land_pose.pose.position.x = final_land_p(0);
+            uav_land_pose.pose.position.y = final_land_p(1);
+            uav_land_pose.pose.position.z = 1.0;
+            uav_land_pose_pub.publish(uav_land_pose);
+          }
+        }
+        else
+        {
+          // 切换到Land模式
+          if (uav_state.mode != "AUTO.LAND"){
+            // ROS_INFO_STREAM(prename << ": Without Danger Zone , Start to land !");
+            SetPX4Mode("AUTO.LAND");
+          }
+        }
       }
       return;
     }
