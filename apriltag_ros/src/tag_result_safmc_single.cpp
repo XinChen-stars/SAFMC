@@ -376,7 +376,7 @@ Eigen::Vector3d SelectNewLandPosition2(const Eigen::Vector3d& Closest_Danger_pos
   Eigen::Vector3d direction = (odom_p - Danger_position).normalized();
   direction(2) = 0; // ignore the z axis
 
-  new_land_position = Danger_position + direction * 1.5; // move 1.5m away from the danger zone
+  new_land_position = Danger_position + direction * 2.0; // move 1.5m away from the danger zone
   new_land_position(2) = 0; // ignore the z axis
 
   // ensure the new land position is valid
@@ -1100,6 +1100,27 @@ void VisualizeTag()
 
 }
 
+// Check other drone detect result
+bool CheckOtherDroneDetectResult()
+{
+  if (other_detected_VICTIM_tags_.empty())
+  {
+    return true;
+  }
+  else
+  {
+    for (int i = 0; i < other_detected_VICTIM_tags_.size(); i++)
+    {
+      if (VICTIM_land_flag[other_detected_VICTIM_tags_[i].tag_id])
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
+
 // Apriltag px4 land
 void PX4_TAG_LAND()
 {
@@ -1109,7 +1130,7 @@ void PX4_TAG_LAND()
     GetOtherDroneDetectResult();
 
     // Check detceted VICTIM tags is empty
-    if (detected_VICTIM_tags_.empty() && other_detected_VICTIM_tags_.empty())
+    if (detected_VICTIM_tags_.empty() && CheckOtherDroneDetectResult())
     {
       wait_land_time ++;
       if (wait_land_time > 6000) // 6000 * 0.01s = 60s
@@ -1119,7 +1140,7 @@ void PX4_TAG_LAND()
           int closest_danger = findClosestDANGER(odom_p);
           Eigen::Vector3d closest_danger_position = detected_DANGER_tags_[closest_danger].tag_position;
           double danger_distance = (odom_p - closest_danger_position).head(2).norm();
-          if (danger_distance > 1.0)
+          if (danger_distance > 1.5)
           {
             // 切换到Land模式
             if (uav_state.mode != "AUTO.LAND"){
