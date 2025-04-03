@@ -104,7 +104,6 @@ void rviz_target_cb(const geometry_msgs::PoseStamped::ConstPtr& msg)//读取rviz
 // pos command callback
 void pos_cmd_cb(const quadrotor_msgs::PositionCommand::ConstPtr& msg)//ego的回调函数
 {
-	ROS_INFO_STREAM("Receive the cmd target!");
     cmd_receive = true;
 	cmd = *msg;
     cmd_pos_x = cmd.position.x;
@@ -239,9 +238,9 @@ int main(int argc, char **argv)
 		// track the target position from pos_cmd_cb
 		if(cmd_receive)
 		{
-			current_goal.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+			current_goal.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;//选择local系，一定要local系
 			current_goal.header.stamp = ros::Time::now();
-			current_goal.type_mask = velocity_mask;
+			current_goal.type_mask = velocity_mask;//这个就算对应的掩码设置，可以看mavros_msgs::PositionTarget消息格式
 			current_goal.velocity.x =  (cmd_pos_x - position_x - position_x_begin) * 2;
 			current_goal.velocity.y =  (cmd_pos_y - position_y - position_y_begin) * 2;
 			current_goal.velocity.z =  (cmd_pos_z - position_z - position_z_begin) * 2;
